@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Config Files for local development (Do Not Commit to Repo) ###
+application-default.properties
