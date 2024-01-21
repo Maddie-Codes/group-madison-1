@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Controller
 @RequestMapping("listing")
 public class ListingController {
@@ -19,10 +22,19 @@ public class ListingController {
     @Autowired
     private ListingRepository listingRepository;
 
+    //________________________________________________________________________________________________listing/new.html - make a new listing
     @GetMapping("new")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
         //model.addAttribute("varieties", varietyRepository.findAll()); //note for future to pass in the available AV varieties, does not have to follow this naming convention/structure
+
+        List<String> maturityLevels = new ArrayList<String>(); //list of maturity levels for the drop-down
+        maturityLevels.add("Seeds");
+        maturityLevels.add("Cutting");
+        maturityLevels.add("Young Plant");
+        maturityLevels.add("Mature Plant");
+        model.addAttribute("maturityLevels", maturityLevels);
+
         return "listing/new";
     }
 
@@ -37,6 +49,7 @@ public class ListingController {
 
         return "redirect:";
     }
+    //________________________________________________________________________________________________end of listing/new.html
 
 
 }
