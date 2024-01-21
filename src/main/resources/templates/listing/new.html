@@ -9,44 +9,27 @@
 
 <form method="post" style="max-width:600px;">
 
+<!--    text box - Plant Variety will eventually be a drop-down with the different varieties as the different options-->
     <div class="form-group">
         <label th:for="variety">Plant Variety</label>
         <input class="form-control" th:field="${listing.variety}" />
         <span th:errors="${listing.variety}" class="error"></span>
     </div>
 
+<!--    drop dpwn-->
     <div class="form-group">
         <label th:for="maturity">Plant Maturity</label>
-<!--        <input type="hidden" >-->
         <select th:field="${listing.maturity}">
             <option th:each="level : ${maturityLevels}" th:value="${level}" th:text="${level}"></option>
-<!--            <option th:value="Seeds" th:text="Seeds"></option>-->
-<!--            <option th:value="Cutting" th:text="Cutting"></option>-->
-<!--            <option th:value="'Young Plant'" th:text="'Young Plant'"></option>-->
-<!--            <option th:value="'Mature Plant'" th:text="'Mature Plant'"></option>-->
         </select>
     </div>
 
+<!--    text box-->
     <div class="form-group">
         <label th:for="description">Brief Description (300 words or less)</label>
         <input class="form-control" th:field="${listing.description}" type="text"/>
         <span th:errors="${listing.description}" class="error"></span>
     </div>
-
-
-
-
-<!--    <div class="form-group">-->
-<!--        <label th:for="variety">Plant Variety</label>-->
-<!--        <input class="form-control" th:field="${listing.variety}" />-->
-<!--        <span th:errors="${listing.variety}" class="error"></span>-->
-<!--    </div>-->
-
-<!--    <div class="form-group">-->
-<!--        <label th:for="description">Short Description (Max 300 words)</label>-->
-<!--        <input class="form-control" th:field="${listing.description}" />-->
-<!--        <span th:errors="${listing.description}" class="error"></span>-->
-<!--    </div>-->
 
     <input type="submit" value="Submit" />
 </form>
