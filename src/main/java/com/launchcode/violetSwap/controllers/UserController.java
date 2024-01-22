@@ -26,7 +26,7 @@ public class UserController {
             return "redirect:/";
         }
         User currentUser = (User) optUser.get();
-        model.addAttribute("userToDisplay", currentUser);
+        model.addAttribute("user", currentUser);
 
         return "user/details";
     }

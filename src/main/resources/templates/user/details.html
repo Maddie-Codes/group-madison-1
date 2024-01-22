@@ -2,9 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
 <head>
     <meta charset="UTF-8"/>
-    <title></title>
+    <title>Violet Swap</title>
 </head>
 <body>
+
+<h1>User Profile</h1>
+<h3 th:text="${user.username}"></h3>
+<h4 th:text="${user.city}+', '+${user.state}"></h4>
+
 
 </body>
 </html>
