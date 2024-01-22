@@ -13,7 +13,7 @@ public enum Maturity {
         this.type = type;
     }
 
-    public String getDisplayName() {
+    public String getType() {
         return type;
     }
 }
