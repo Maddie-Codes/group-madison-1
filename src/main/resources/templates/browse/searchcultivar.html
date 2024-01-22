@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org/">
+<head>
+</head>
+<body>
+<div>
+    <form th:action="@{/search/results}" method = "post">
+        <h1>
+            <label th:for="description">Browse Cultivar</label>
+        </h1>
+        <p>
+            <input class="form-control" th:field="${listing.cultivarname}" type="text"/>
+            <span th:errors="${listing.cultivarname}" class="error"></span>
+        </p>
+        <input type="submit" value="Search" />
+    </form>
+    <table class="cultivar-listing">
+        <tr th:each="cultivar : ${cultivars}">
+            <td>
+                <p>
+                    Cultivar Name:
+                    <a th:href="@{'/view/' + ${cultivar.id}}" th:text="${cultivar.id}"></a>
+                </p>
+                <p th:text="${'Cultivar: ' + cultivar.name}"></p>
+            </td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
