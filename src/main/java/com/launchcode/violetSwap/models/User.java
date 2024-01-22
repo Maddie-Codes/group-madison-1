@@ -39,7 +39,7 @@ public class User extends AbstractEntity {
     private String state;
 
 
-    private List<Listing> userListings = new ArrayList<>();
+//    private List<Listing> userListings = new ArrayList<>();
 
     public User() {}
 
@@ -92,7 +92,7 @@ public class User extends AbstractEntity {
         this.state = state;
     }
 
-    public List<Listing> getUserListings() {
-        return userListings;
-    }
+//    public List<Listing> getUserListings() {
+//        return userListings;
+//    }
 }
