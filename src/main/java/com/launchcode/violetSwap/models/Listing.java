@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 public class Listing extends AbstractEntity {
     @Size(max = 100)
     private String variety;
-    private String maturity;
+    private Maturity maturity; //enum Maturity
     @Size(max = 300)
     private String description;
 
@@ -16,7 +16,7 @@ public class Listing extends AbstractEntity {
 
     }
 
-    public Listing(String variety, String maturity, String description){ //Initialize id and fields.
+    public Listing(String variety, Maturity maturity, String description){ //Initialize id and fields.
         super(); //for id
         this.variety = variety;
         this.maturity = maturity;
@@ -33,10 +33,10 @@ public class Listing extends AbstractEntity {
         this.variety = variety;
     }
 
-    public String getMaturity() {
+    public Maturity getMaturity() {
         return maturity;
     }
-    public void setMaturity(String maturity) {
+    public void setMaturity(Maturity maturity) {
         this.maturity = maturity;
     }
 
