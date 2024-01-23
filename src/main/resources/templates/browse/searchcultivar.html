@@ -4,21 +4,17 @@
 </head>
 <body>
 <div>
-    <form th:action="@{/search/results}" method = "post">
-        <h1>
-            <label th:for="description">Browse Cultivar</label>
-        </h1>
-        <p>
-            <input class="form-control" th:field="${listing.variety}" type="text"/>
-            <span th:errors="${listing.cultivarname}" class="error"></span>
-        </p>
-        <input type="submit" value="Search" />
+<!--    <form th:action="@{/search/results}" method = "post">-->
+    <form th:action="@{/listings/search}" method="get">
+        <label for="variety">Search by Variety :</label>
+        <input type="text" id="variety" name="variety" th:value="${searchVariety}" />
+        <button type="submit">Search</button>
     </form>
     <table class="cultivar-listing">
         <tr th:each="cultivar : ${cultivars}">
             <td>
                 <p>
-                    Cultivar Name:
+                    Variety :
                     <a th:href="@{'/view/' + ${cultivar.id}}" th:text="${cultivar.id}"></a>
                 </p>
                 <p th:text="${'Cultivar: ' + cultivar.name}"></p>
