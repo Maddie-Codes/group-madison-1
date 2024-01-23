@@ -23,8 +23,7 @@ public class Listing extends AbstractEntity {
         this.description = description;
     }
 
-
-
+    
     //getters and setters
     public String getVariety() {
         return variety;
