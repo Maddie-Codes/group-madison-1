@@ -9,7 +9,7 @@
             <label th:for="description">Browse Cultivar</label>
         </h1>
         <p>
-            <input class="form-control" th:field="${listing.cultivarname}" type="text"/>
+            <input class="form-control" th:field="${listing.variety}" type="text"/>
             <span th:errors="${listing.cultivarname}" class="error"></span>
         </p>
         <input type="submit" value="Search" />
