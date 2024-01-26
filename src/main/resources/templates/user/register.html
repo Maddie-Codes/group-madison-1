@@ -10,44 +10,44 @@
 
 <h1 th:text="${title}"></h1>
 
-<form method="post" action="/user/newUser">
+<form method="post" action="/register">
     <div class="form-group">
         <label>Username
-            <input th:field="${user.username}" class="form-control"/>
+            <input th:field="${registerFormDTO.username}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${user.username}"></p>
+        <p class="error" th:errors="${registerFormDTO.username}"></p>
     </div>
     <div class="form-group">
         <label>Password
-            <input th:field="${user.password}" class="form-control"/>
+            <input th:field="${registerFormDTO.password}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${user.password}"></p>
+        <p class="error" th:errors="${registerFormDTO.password}"></p>
     </div>
     <div class="form-group">
         <label>Confirm Password
-            <input class="form-control"/>
+            <input th:field="${registerFormDTO.confirmPassword}" class="form-control"/>
         </label>
     </div>
     <div class="form-group">
         <label>Email Address
-            <input th:field="${user.email}" class="form-control"/>
+            <input th:field="${registerFormDTO.email}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${user.email}"></p>
+        <p class="error" th:errors="${registerFormDTO.email}"></p>
     </div>
     <div class="form-group">
         <label>City
-            <input th:field="${user.city}" class="form-control"/>
+            <input th:field="${registerFormDTO.city}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${user.city}"></p>
+        <p class="error" th:errors="${registerFormDTO.city}"></p>
     </div>
     <div class="form-group">
         <label>State
-            <input th:field="${user.state}" class="form-control"/>
+            <input th:field="${registerFormDTO.state}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${user.state}"></p>
+        <p class="error" th:errors="${registerFormDTO.state}"></p>
     </div>
     <div class="form-group">
-        <input type="submit" value="Sign Up" class="btn"/>
+        <input type="submit" value="Register Now" class="btn"/>
     </div>
 </form>
 

@@ -31,14 +31,6 @@ public class UserController {
         return "user/details";
     }
 
-    @GetMapping("/newUser")
-    public String displayCreateNewUserForm(Model model) {
-        model.addAttribute("title", "Create an Account");
-        model.addAttribute(new User());
-
-        return "user/newUser";
-    }
-
     @PostMapping("/newUser")
     public String processCreateNewUserForm(@ModelAttribute @Valid User newUser, Errors errors, Model model) {
 
