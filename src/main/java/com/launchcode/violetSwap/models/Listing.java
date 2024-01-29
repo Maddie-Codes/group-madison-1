@@ -1,12 +1,27 @@
 package com.launchcode.violetSwap.models;
 
-import jakarta.persistence.Entity;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Listing extends AbstractEntity {
     @Size(max = 100)
     private String variety;
+
+    public Set<Varieties> getVarieties() {
+        return varieties;
+    }
+
+    public void setVarieties(Set<Varieties> varieties) {
+        this.varieties = varieties;
+    }
+
+    @ManyToMany
+    private Set<Varieties> varieties = new HashSet<>();
+
+    @Enumerated(EnumType.STRING)
     private Maturity maturity; //enum Maturity
     @Size(max = 300)
     private String description;
