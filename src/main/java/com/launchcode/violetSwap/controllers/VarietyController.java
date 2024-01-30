@@ -8,12 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.launchcode.violetSwap.models.data.VarietyRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import java.util.List;
 
 
 @Controller
 @RequestMapping("/varieties")
-public class VarietiesController {
+public class VarietyController {
 
     @Autowired
     private VarietyRepository varietyRepository;
