@@ -37,7 +37,7 @@ public class Listing extends AbstractEntity {
 
     public Listing(Variety variety, Maturity maturity, String description){ //Initialize id and fields.
         super(); //for id
-        this.variety = variety;//this will change once the "new variety" page is complete
+        this.variety = variety;
         this.maturity = maturity;
         this.description = description;
     }

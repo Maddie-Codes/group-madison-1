@@ -2,16 +2,15 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.Listing;
 import com.launchcode.violetSwap.models.Maturity;
+import com.launchcode.violetSwap.models.Variety;
 import com.launchcode.violetSwap.models.data.ListingRepository;
+import com.launchcode.violetSwap.models.data.VarietyRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,15 +21,15 @@ public class ListingController {
 
     @Autowired
     private ListingRepository listingRepository;
+    @Autowired
+    private VarietyRepository varietyRepository;
 
     //________________________________________________________________________________________________listing/new.html - make a new listing
     @GetMapping("new")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
-        //model.addAttribute("varieties", varietyRepository.findAll()); //note for future to pass in the available AV varieties, does not have to follow this naming convention/structure
-
         model.addAttribute("maturityLevels", Maturity.values());//enum Maturity
-
+        model.addAttribute("availableVarieties", varietyRepository.findAll());
         return "listing/new";
     }
 
@@ -47,5 +46,23 @@ public class ListingController {
     }
     //________________________________________________________________________________________________end of listing/new.html
 
+    //__________________________________________________________________________________________listing/newVariety - make a new variety
+
+    @GetMapping("newVariety")
+    public String displayNewVarietyForm (Model model){
+        model.addAttribute(new Variety());
+        return"listing/newVariety";
+    }
+
+    @PostMapping("newVariety")
+    public String processNewVarietyForm(@ModelAttribute @Valid Variety newVariety, Errors errors, Model model){
+        if(errors.hasErrors()){
+            return "listing/newVariety";
+        } else{
+            varietyRepository.save(newVariety);
+        }
+        return "listing/new";
+    }
+    //________________________________________________________________________________________________end of listing/newVariety.html
 
 }
