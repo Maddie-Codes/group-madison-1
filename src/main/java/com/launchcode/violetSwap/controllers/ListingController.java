@@ -57,10 +57,15 @@ public class ListingController {
     @PostMapping("newVariety")
     public String processNewVarietyForm(@ModelAttribute @Valid Variety newVariety, Errors errors, Model model){
         if(errors.hasErrors()){
+            model.addAttribute(new Variety());
             return "listing/newVariety";
         } else{
             varietyRepository.save(newVariety);
+
         }
+        model.addAttribute(new Listing());
+        model.addAttribute("maturityLevels", Maturity.values());//enum Maturity
+        model.addAttribute("availableVarieties", varietyRepository.findAll());
         return "listing/new";
     }
     //________________________________________________________________________________________________end of listing/newVariety.html
