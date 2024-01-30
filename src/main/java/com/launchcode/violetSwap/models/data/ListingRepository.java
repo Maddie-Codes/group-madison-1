@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ListingRepository extends JpaRepository<Listing, Integer> {
 
-    List<Listing> findByVariety(String variety);
+//    List<Listing> findByVariety(String variety);
 }
 

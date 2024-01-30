@@ -12,10 +12,10 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue //id is automatically generated
-    private int id;
+    private long id;
 
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

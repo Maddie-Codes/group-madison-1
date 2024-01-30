@@ -1,12 +1,11 @@
 package com.launchcode.violetSwap.controllers;
 
-import com.launchcode.violetSwap.models.Varieties;
+import com.launchcode.violetSwap.models.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import com.launchcode.violetSwap.models.data.VarietiesRepository;
+import com.launchcode.violetSwap.models.data.VarietyRepository;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
@@ -16,18 +15,18 @@ import java.util.List;
 public class VarietiesController {
 
     @Autowired
-    private VarietiesRepository varietiesRepository;
+    private VarietyRepository varietyRepository;
 
     @GetMapping
     public String showVarieties(Model model) {
-        List<Varieties> varieties = varietiesRepository.findAll();
+        Iterable<Variety> varieties = varietyRepository.findAll();
         model.addAttribute("varieties", varieties);
         return "/browse/varieties";
     }
 
-     @GetMapping("/search/variety/{id}")
-    public String showListingsForVariety(@PathVariable Long id, Model model) {
-        Varieties selectedVariety = varietiesRepository.findById(id).orElse(null);
+    @GetMapping("/search/variety/{id}")
+    public String showListingsForVariety(long id,Model model) {
+        Variety selectedVariety = varietyRepository.findById(id).orElse(null);
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
             model.addAttribute("selectedVariety", selectedVariety);

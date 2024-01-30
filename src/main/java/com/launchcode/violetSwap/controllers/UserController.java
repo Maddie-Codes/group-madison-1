@@ -47,7 +47,7 @@ public class UserController {
             return "user/newUser";
         }
         userRepository.save(newUser);
-        int newUserId = newUser.getId();
+        long newUserId = newUser.getId();
         return "redirect:/user/"+newUserId;
     }
 }
