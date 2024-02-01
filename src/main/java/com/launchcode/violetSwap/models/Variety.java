@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-public class Varieties{
+public class Variety extends AbstractEntity{
     public String getName() {
         return name;
     }
@@ -14,24 +14,12 @@ public class Varieties{
         this.name = name;
     }
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     private String name;
 
-    @ManyToMany(mappedBy = "varieties")
+    @OneToMany(mappedBy = "variety")
     private Set<Listing> listings = new HashSet<>();
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Varieties() {
+    public Variety() {
         // default constructor
     }
 
