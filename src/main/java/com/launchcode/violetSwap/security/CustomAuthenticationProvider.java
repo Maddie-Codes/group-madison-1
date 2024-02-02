@@ -15,12 +15,14 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 
+//Component annotation makes the auth available to the entire app rather than just an instance of the security config class
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private UserRepository userRepository;
 
+    //Create custom logic to authenticate user by username/password based on our data
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String username = authentication.getName();
@@ -37,6 +39,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(username, password, authorities);
     }
 
+    //Tells spring that this authentication provider is good for the given type of token/auth
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);

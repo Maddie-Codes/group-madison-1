@@ -21,6 +21,7 @@ public class SecurityConfig {
     @Autowired
     private CustomAuthenticationProvider customAuthProvider;
 
+    //Create an auth bean for spring security to use to create and track auth
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -28,22 +29,29 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 
+    //Specifies what permissions are required for pages and valid login methods
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
+        //Allows any user (unauthenticated) to perform GET requests for the "/", "/register", and "/error" paths
+        //Allows any user (unauthenticated) to POST to the "/register" endpoint
+        //Requires a user to be authenticated to access any other page
         http.authorizeHttpRequests( auth -> {
                     auth.requestMatchers(HttpMethod.GET, "/", "/register", "/error").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     auth.anyRequest().authenticated();
                 });
 
+        //Spring security magic to keep cors from shooting us in the foot
         http.cors(Customizer.withDefaults());
 
+        //Allow users to authenticate via a login form, use the custom login page for this purpose and on successful auth route to "/secured"
         http.formLogin((form) -> form
                         .loginPage("/login")
                         .defaultSuccessUrl("/secured")
                         .permitAll());
 
+        //Allow user to authenticate via oauth2, use the custom login page for this purpose
         http.oauth2Login((oauth2 -> oauth2
                         .loginPage("/login")
                         .permitAll()));
