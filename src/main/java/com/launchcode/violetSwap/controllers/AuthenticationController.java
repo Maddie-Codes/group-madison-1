@@ -4,10 +4,14 @@ import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.dto.LoginFormDTO;
 import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
+import com.launchcode.violetSwap.security.CustomAuthenticationProvider;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.token.Token;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -23,7 +27,11 @@ public class AuthenticationController {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+
     private static final String userSessionKey = "user";
+    private static final String userAuthTokenKey = "userAuthToken";
 
     public User getUserFromSession(HttpSession session) {
         Integer userId = (Integer) session.getAttribute(userSessionKey);
@@ -42,6 +50,10 @@ public class AuthenticationController {
 
     private static void setUserInSession(HttpSession session, User user) {
         session.setAttribute(userSessionKey, user.getId());
+    }
+
+    private static void setUserAuthToken(HttpSession session, Authentication authentication) {
+        session.setAttribute(userAuthTokenKey, authentication);
     }
 
     @GetMapping("/register")
@@ -110,14 +122,17 @@ public class AuthenticationController {
 
         String password = loginFormDTO.getPassword();
 
-        if(!theUser.isMatchingPassword(password)) {
-            errors.rejectValue("password", "password.invalid", "Invalid password");
-            model.addAttribute("title", "Log In");
-            return "login";
-        }
+//        if(!theUser.isMatchingPassword(password)) {
+//            errors.rejectValue("password", "password.invalid", "Invalid password");
+//            model.addAttribute("title", "Log In");
+//            return "login";
+//        }
 
+        Authentication authToken = customAuthenticationProvider.authenticate((Authentication) loginFormDTO);
+
+        setUserAuthToken(request.getSession(), authToken);
         setUserInSession(request.getSession(), theUser);
-        return "redirect:";
+        return "/securedTest";
     }
 
     @GetMapping("/logout")
