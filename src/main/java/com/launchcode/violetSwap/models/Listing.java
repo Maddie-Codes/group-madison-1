@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 
 
 @Entity
+@Table(name = "listing")
 public class Listing extends AbstractEntity {
 
     @ManyToOne

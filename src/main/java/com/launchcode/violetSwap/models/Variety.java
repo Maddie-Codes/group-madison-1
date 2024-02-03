@@ -8,6 +8,8 @@ import java.util.Set;
 public class Variety extends AbstractEntity{
 
     private String name;
+
+    private String imgPath;
     public String getName() {
         return name;
     }
@@ -17,7 +19,20 @@ public class Variety extends AbstractEntity{
     }
 
 
-    @OneToMany(mappedBy = "variety")
+    public String getImgPath() {
+        return imgPath;
+    }
+
+    public void setImgPath(String imgPath) {
+        this.imgPath = imgPath;
+    }
+
+    // Public method to access imagePath indirectly
+    public String getImagePathForThymeleaf() {
+        return getImgPath();
+    }
+
+    @OneToMany(mappedBy = "variety", cascade = CascadeType.ALL)
     private Set<Listing> listings = new HashSet<>();
 
     public Variety() {

@@ -27,15 +27,33 @@ public class VarietyController {
         return "browse/varieties";
     }
 
-     @GetMapping("/search/variety/{id}")
-    public String showListingsForVariety(@RequestParam String varietySearch, Model model) {
-        Variety selectedVariety = varietiesRepository.findByName(varietySearch);
+    @GetMapping("/search/variety/{id}")
+    public String showListingsForVariety(@PathVariable Integer id, @RequestParam(required = false) String varietySearch, Model model) {
+        Variety selectedVariety = varietiesRepository.findById(id).orElse(null);
+
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
             model.addAttribute("selectedVariety", selectedVariety);
-            return "browse/varieties";
+            return "browse/listing";
         } else {
             return "redirect:/varieties";
         }
+    }
+
+    @GetMapping("/browse")
+    public String browseVarieties(Model model, @RequestParam(required = false) String varietySearch) {
+        List<Variety> varieties;
+        if (varietySearch != null && !varietySearch.isEmpty()) {
+            Variety foundVariety = varietiesRepository.findByName(varietySearch);
+            if (foundVariety != null) {
+                return "redirect:/varieties/search/variety/" + foundVariety.getId();
+            }
+            // Handle case when variety is not found
+            return "redirect:/varieties";
+        } else {
+            varieties = varietiesRepository.findAll();
+        }
+        model.addAttribute("varieties", varieties);
+        return "browse/varieties";
     }
 }
