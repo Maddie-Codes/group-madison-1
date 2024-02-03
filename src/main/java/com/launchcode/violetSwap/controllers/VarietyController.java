@@ -24,7 +24,7 @@ public class VarietyController {
     public String showVarieties(Model model) {
         List<Variety> varieties = varietiesRepository.findAll();
         model.addAttribute("varieties", varieties);
-        return "/browse/varieties";
+        return "browse/varieties";
     }
 
      @GetMapping("/search/variety/{id}")
@@ -33,7 +33,7 @@ public class VarietyController {
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
             model.addAttribute("selectedVariety", selectedVariety);
-            return "/browse/search";
+            return "browse/varieties";
         } else {
             return "redirect:/varieties";
         }
