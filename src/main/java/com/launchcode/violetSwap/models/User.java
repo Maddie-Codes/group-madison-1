@@ -5,12 +5,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class User extends AbstractEntity {
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @NotNull
     @NotBlank
@@ -19,8 +21,7 @@ public class User extends AbstractEntity {
 
     @NotNull
     @NotBlank
-    @Size(min=10, max=100)
-    private String password;
+    private String pwHash;
 
     @NotNull
     @NotBlank
@@ -46,10 +47,14 @@ public class User extends AbstractEntity {
     public User(String username, String password, String email, String city, String state) {
         super();
         this.username = username;
-        this.password = password;
+        this.pwHash = encoder.encode(password);
         this.email = email;
         this.city = city;
         this.state = state;
+    }
+
+    public boolean isMatchingPassword(String password) {
+        return encoder.matches(password, pwHash);
     }
 
     public String getUsername() {
@@ -60,12 +65,8 @@ public class User extends AbstractEntity {
         this.username = username;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    public void setNewPassword(String password) {
+        this.pwHash = encoder.encode(password);
     }
 
     public String getEmail() {

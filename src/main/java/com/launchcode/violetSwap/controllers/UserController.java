@@ -31,23 +31,4 @@ public class UserController {
         return "user/details";
     }
 
-    @GetMapping("/newUser")
-    public String displayCreateNewUserForm(Model model) {
-        model.addAttribute("title", "Create an Account");
-        model.addAttribute(new User());
-
-        return "user/newUser";
-    }
-
-    @PostMapping("/newUser")
-    public String processCreateNewUserForm(@ModelAttribute @Valid User newUser, Errors errors, Model model) {
-
-        if(errors.hasErrors()) {
-            model.addAttribute("title", "Create an Account");
-            return "user/newUser";
-        }
-        userRepository.save(newUser);
-        int newUserId = newUser.getId();
-        return "redirect:/user/"+newUserId;
-    }
 }
