@@ -21,11 +21,11 @@ public class SearchController {
 
     //___________________________________________________________________________Browse Varieties
 
-    @GetMapping("/browse")
+    @GetMapping("/varieties")
     public String showVarieties(Model model) {
         List<Variety> varieties = varietyRepository.findAll();
         model.addAttribute("varieties", varieties);
-        return "/search/browse";
+        return "/search/varieties";
     }
 
     @GetMapping("/listings/{id}")
@@ -36,7 +36,7 @@ public class SearchController {
             model.addAttribute("selectedVariety", selectedVariety);
             return "/search/listings";
         } else {
-            return "redirect:/search/browse";
+            return "redirect:/search/varieties";
         }
     }
     //___________________________________________________________________________
