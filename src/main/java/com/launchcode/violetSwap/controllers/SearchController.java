@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-//connects to search/browse, and search/variety/{id}
+//connects to search/varieties, and search/variety/{id}
 @Controller
 @RequestMapping("/search")
 public class SearchController {
@@ -19,16 +19,16 @@ public class SearchController {
     @Autowired
     private VarietyRepository varietyRepository;
 
-    //___________________________________________________________________________Browse Varieties
 
-    @GetMapping("/varieties")
+
+    @GetMapping("/varieties")//_________________________________________________Browse Varieties
     public String showVarieties(Model model) {
         List<Variety> varieties = varietyRepository.findAll();
         model.addAttribute("varieties", varieties);
         return "/search/varieties";
     }
 
-    @GetMapping("/listings/{id}")
+    @GetMapping("/listings/{id}") //_____________________________________________Show listings in selected variety
     public String showListingsForVariety(@RequestParam String varietySearch, Model model) {
         Variety selectedVariety = varietyRepository.findByName(varietySearch);
         if (selectedVariety != null) {
