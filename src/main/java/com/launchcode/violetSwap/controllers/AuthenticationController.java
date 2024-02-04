@@ -95,6 +95,7 @@ public class AuthenticationController {
 
         return "/home";
 
+
     }
 
     @GetMapping("/login")
