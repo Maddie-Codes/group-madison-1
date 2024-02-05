@@ -6,9 +6,7 @@ public class RegisterFormDTO extends LoginFormDTO {
 
     private String email;
 
-    private String city;
-
-    private String state;
+    private String zipcode;
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -26,19 +24,12 @@ public class RegisterFormDTO extends LoginFormDTO {
         this.email = email;
     }
 
-    public String getCity() {
-        return city;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
 }
