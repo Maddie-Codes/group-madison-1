@@ -1,29 +1,37 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org/">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="UTF-8">
+    <title>Listings</title>
 </head>
 <body>
-<div>
-    <h2>Search Results : <span th:text="${searchVariety}"></span></h2>
+<h1>Listings</h1>
+<table border="1">
+    <thead></thead>
+    <tr th:each="listing : ${listings}">
+        <td th:text="${listing.id}"></td>
+        <td width="150" height="100">
+<!--            <img th:src="${listing.variety.imgPath != null and listing.variety.imgPath != ''} ? ${listing.variety.imgPath} : '/img/DefaultImage.png'" alt="Default Image" />-->
+        </td>
+        <td>
+            <div>
+                <label th:for="variety">Violet Variety:</label>
+                <label th:text="${listing.variety.name}"></label>
+            </div>
+            <div>
+                <label th:for="maturity">Violet Maturity:</label>
+                <label th:text="${listing.maturity}"></label>
+            </div>
+            <div>
+                <label th:for="maturity">Details:</label>
+                <label th:text="${listing.description}"></label>
+            </div>
+        </td>
 
-    <table border="1">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Variety</th>
-            <th>Maturity</th>
-            <th>Description</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="listing : ${listings}">
-            <td th:text="${listing.id}"></td>
-            <td th:text="${listing.variety}"></td>
-            <td th:text="${listing.maturity.getType()}"></td>
-            <td th:text="${listing.description}"></td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+    </tr>
+    </tbody>
+</table>
+
+
 </body>
 </html>

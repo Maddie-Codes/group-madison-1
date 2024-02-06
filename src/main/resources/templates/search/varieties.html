@@ -5,25 +5,20 @@
 <body>
 <div>
     <h2>Varieties</h2>
-    <form th:action="@{/varieties}" method = "get">
-    <!-- Browse Text Box Form -->
-
+    <form th:action="@{/search/browse}" method="get">
         <label for="varietySearch">Browse by Variety :</label>
         <input type="text" id="varietySearch" name="varietySearch" />
         <button type="submit">Browse</button>
-
-
+    </form>
     <!-- List of Varieties -->
     <ul>
         <li th:each="variety : ${varieties}">
-<!--            <a th:href="@{/varieties/search/variety/{id}(id=${variety.id})}" th:text="${variety.name}"></a>-->
-<!--            <a th:if="${variety != null}" th:href="@{/varieties/search/variety/${variety.id}" th:text="${variety.id}"></a>-->
-<!--            <span th:text="${variety.id}"></span>-->
-            <a th:href="@{/search/listings/{id}(id=${variety.id})}" th:text="${variety.name}"></a>
-        </li>
+<!--            <a th:href="@{/search/search/variety/{id}(id=${variety.id})}" th:text="${variety.name}"></a>-->
 
+            <a th:href="@{/search/search/variety/{id}(id=${variety.id}, varietySearch=${varietySearch})}" th:text="${variety.name}"></a>
+
+        </li>
     </ul>
-    </form>
 </div>
 </body>
 </html>
