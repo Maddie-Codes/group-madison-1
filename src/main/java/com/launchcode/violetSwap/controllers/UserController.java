@@ -24,10 +24,16 @@ public class UserController {
     //Use of path variable will change to getting userId from request or from session when auth workflow is implemented
     @GetMapping("/myDetails")
     public String displayUserPage(HttpServletRequest request, Model model) {
-        
+
         Principal principal = request.getUserPrincipal();
 
         User currentUser = userRepository.findByUsername(principal.getName());
+
+        if (currentUser == null) {
+            User newUser = new User(principal.getName());
+            userRepository.save(newUser);
+            currentUser = newUser;
+        }
 
         model.addAttribute("user", currentUser);
 

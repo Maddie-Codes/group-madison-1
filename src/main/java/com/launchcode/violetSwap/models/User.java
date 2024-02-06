@@ -19,24 +19,21 @@ public class User extends AbstractEntity {
     @Size(max=100)
     private String username;
 
-    @NotNull
-    @NotBlank
     private String pwHash;
 
-    @NotNull
-    @NotBlank
-    @Email
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Size(max=10)
     private String zipcode;
 
 
 //    private List<Listing> userListings = new ArrayList<>();
 
     public User() {}
+
+    public User(String username) {
+        super();
+        this.username = username;
+    }
 
     public User(String username, String password, String email, String zipcode) {
         super();

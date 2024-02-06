@@ -1,11 +1,22 @@
 package com.launchcode.violetSwap.models.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class RegisterFormDTO extends LoginFormDTO {
 
     private String confirmPassword;
 
+    @NotNull
+    @NotBlank
+    @Email
     private String email;
 
+    @NotNull
+    @NotBlank
+    @Size(max=10)
     private String zipcode;
 
     public String getConfirmPassword() {
