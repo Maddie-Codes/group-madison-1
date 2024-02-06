@@ -48,12 +48,13 @@ public class SecurityConfig {
         //Allow users to authenticate via a login form, use the custom login page for this purpose and on successful auth route to "/secured"
         http.formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/secured")
+                        .defaultSuccessUrl("/user/myDetails")
                         .permitAll());
 
         //Allow user to authenticate via oauth2, use the custom login page for this purpose
         http.oauth2Login((oauth2 -> oauth2
                         .loginPage("/login")
+                        .defaultSuccessUrl("/user/myDetails")
                         .permitAll()));
 
         http.logout((logout) -> logout

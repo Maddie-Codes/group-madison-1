@@ -2,13 +2,16 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -19,16 +22,17 @@ public class UserController {
     private UserRepository userRepository;
 
     //Use of path variable will change to getting userId from request or from session when auth workflow is implemented
-    @GetMapping("/{userId}")
-    public String displayUserPage(@PathVariable int userId, Model model) {
-        Optional optUser = userRepository.findById(userId);
-        if (optUser.isEmpty()) {
-            return "redirect:/";
-        }
-        User currentUser = (User) optUser.get();
+    @GetMapping("/myDetails")
+    public String displayUserPage(HttpServletRequest request, Model model) {
+        
+        Principal principal = request.getUserPrincipal();
+
+        User currentUser = userRepository.findByUsername(principal.getName());
+
         model.addAttribute("user", currentUser);
 
         return "user/details";
     }
+
 
 }
