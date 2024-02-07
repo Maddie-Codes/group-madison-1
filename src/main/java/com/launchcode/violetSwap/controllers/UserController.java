@@ -17,7 +17,7 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-
+    //________________________________________________________________________________________________display user page
     //Use of path variable will change to getting userId from request or from session when auth workflow is implemented
     @GetMapping("/{userId}")
     public String displayUserPage(@PathVariable int userId, Model model) {
@@ -30,5 +30,8 @@ public class UserController {
 
         return "user/details";
     }
+
+
+    //________________________________________________________________________________________________
 
 }
