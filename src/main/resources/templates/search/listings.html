@@ -27,7 +27,12 @@
                 <label th:text="${listing.description}"></label>
             </div>
         </td>
-
+        <td width="50" >
+            <!-- Add an "Update" button -->
+            <form th:action="@{/update/{id}(id=${listing.id})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
