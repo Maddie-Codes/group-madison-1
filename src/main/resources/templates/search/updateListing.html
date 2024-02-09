@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<body class="container  body-content">
+<h1>Update Listing</h1>
+<form th:action="@{/search/updateListing/{id}(id=${listing.id})}" method="post">
+    <div class="form-group">
+        <label th:for="variety">Plant Variety</label>
+        <input class="form-control" th:field="${listing.variety}" />
+        <span th:errors="${listing.variety}" class="error"></span>
+    </div>
+    <div class="form-group">
+        <label th:for="maturity">Plant Maturity</label>
+        <select th:field="${listing.maturity}">
+            <option th:each="level : ${maturityLevels}" th:value="${level}" th:text="${level.type}"></option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label th:for="description">Brief Description (300 words or less)</label>
+        <input class="form-control" th:field="${listing.description}" type="text"/>
+        <span th:errors="${listing.description}" class="error"></span>
+    </div>
+    <div>
+    <button type="submit">Update</button>
+    </div>
+</form>
+</body>
+</html>
+
+
