@@ -13,39 +13,36 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
-import java.util.List;
-
+//connects to user/new-listing and user/new-variety
 @Controller
-@RequestMapping("listing")
-public class ListingController {
+@RequestMapping("user")
+public class NewListingVarietyController {
 
     @Autowired
     private ListingRepository listingRepository;
 
-    //________________________________________________________________________________________________listing/new.html - make a new listing
-    @GetMapping("new")
+    //________________________________________________________________________________________________user/new-listing.html - make a new listing
+    @GetMapping("new-listing")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
         //model.addAttribute("varieties", varietyRepository.findAll()); //note for future to pass in the available AV varieties, does not have to follow this naming convention/structure
-
         model.addAttribute("maturityLevels", Maturity.values());//enum Maturity
-
-        return "listing/new";
+        return "user/new-listing";
     }
 
-    @PostMapping("new")
+    @PostMapping("new-listing")
     public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, Model model){
         if (errors.hasErrors()){
-            return "listing/new";
+            return "user/new-listing";
         } else{
-            listingRepository.save(newListing);
+            listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        //if no errors, save listing to repository
-
-        return "redirect:";
+        return "redirect:user/details";
     }
-    //________________________________________________________________________________________________end of listing/new.html
+    //________________________________________________________________________________________________
+    //________________________________________________________________________________________________ user/new-variety.html - add a new variety
 
+    //in progress
 
+    //________________________________________________________________________________________________
 }
