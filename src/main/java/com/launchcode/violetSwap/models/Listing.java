@@ -6,7 +6,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 public class Listing extends AbstractEntity {
-    @Size(max = 100)
+
     @ManyToOne
     private Variety variety;
 

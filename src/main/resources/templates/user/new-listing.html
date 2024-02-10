@@ -40,6 +40,8 @@
         <span th:errors="${listing.description}" class="error"></span>
     </div>
 
+    <!-- Include CSRF token -->
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     <input type="submit" value="Submit" />
 </form>
 

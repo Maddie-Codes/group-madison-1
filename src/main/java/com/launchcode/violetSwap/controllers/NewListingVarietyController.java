@@ -41,7 +41,7 @@ public class NewListingVarietyController {
         } else{
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "redirect:user/details";
+        return "redirect:/details";
     }
     //________________________________________________________________________________________________
     //________________________________________________________________________________________________ user/new-variety.html - add a new variety
