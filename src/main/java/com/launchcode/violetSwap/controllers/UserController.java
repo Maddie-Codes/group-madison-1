@@ -1,15 +1,12 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -50,15 +47,18 @@ public class UserController {
 
         Principal principal = request.getUserPrincipal();
         String authUsername;
+        LoginType loginType = null;
 
         if (principal instanceof OAuth2AuthenticationToken) {
             // github
             authUsername = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("login");
+            loginType = LoginType.OAUTH_GITHUB;
 
             if (authUsername == null) {
                 // gmail
                 String tokenEmail = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
                 authUsername = tokenEmail.split("@")[0];
+                loginType = LoginType.OAUTH_GOOGLE;
             }
         } else {
             authUsername = principal.getName();
@@ -67,7 +67,7 @@ public class UserController {
         User currentUser = userRepository.findByUsername(authUsername);
 
         if (currentUser == null) {
-            User newUser = new User(authUsername);
+            User newUser = new User(authUsername, loginType);
             userRepository.save(newUser);
             currentUser = newUser;
         }

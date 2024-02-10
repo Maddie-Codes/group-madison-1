@@ -19,6 +19,9 @@ public class User extends AbstractEntity {
     @Size(max=100)
     private String username;
 
+    @NotNull
+    private String loginType;
+
     private String pwHash;
 
     private String email;
@@ -30,14 +33,16 @@ public class User extends AbstractEntity {
 
     public User() {}
 
-    public User(String username) {
+    public User(String username, LoginType loginType) {
         super();
         this.username = username;
+        this.loginType = loginType.getType();
     }
 
-    public User(String username, String password, String email, String zipcode) {
+    public User(String username, LoginType loginType, String password, String email, String zipcode) {
         super();
         this.username = username;
+        this.loginType = loginType.getType();
         this.pwHash = encoder.encode(password);
         this.email = email;
         this.zipcode = zipcode;

@@ -1,5 +1,6 @@
 package com.launchcode.violetSwap.models.dto;
 
+import com.launchcode.violetSwap.models.LoginType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,6 +9,8 @@ import jakarta.validation.constraints.Size;
 public class RegisterFormDTO extends LoginFormDTO {
 
     private String confirmPassword;
+
+    private LoginType loginType = LoginType.FORM;
 
     @NotNull
     @NotBlank
@@ -26,6 +29,8 @@ public class RegisterFormDTO extends LoginFormDTO {
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
+
+    public LoginType getLoginType() {return loginType;}
 
     public String getEmail() {
         return email;
