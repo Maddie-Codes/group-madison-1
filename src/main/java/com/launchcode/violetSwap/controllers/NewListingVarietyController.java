@@ -29,8 +29,8 @@ public class NewListingVarietyController {
     @GetMapping("new-listing")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
-        //model.addAttribute("varieties", varietyRepository.findAll()); //note for future to pass in the available AV varieties, does not have to follow this naming convention/structure
-        model.addAttribute("maturityLevels", Maturity.values());//enum Maturity
+        model.addAttribute("availableVarieties", varietyRepository.findAll()); //pass in the available AV varieties
+        model.addAttribute("maturityLevels", Maturity.values());//pass in enum Maturity
         return "user/new-listing";
     }
 
