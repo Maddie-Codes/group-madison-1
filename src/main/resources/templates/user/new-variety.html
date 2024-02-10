@@ -5,8 +5,17 @@
     <title>Title</title>
 </head>
 <body>
-<!-- in progress -->
+<form method="post" style="max-width:600px;">
+    <!--    text box for description-->
+    <div class="form-group">
+        <label th:for="name">Name of your Variety: </label>
+        <input class="form-control" th:field="${variety.name}" type="text"/>
+        <span th:errors="${variety.name}" class="error"></span>
+    </div>
+
+    <input type="submit" value="Submit" />
+</form>
+
 </body>
 </html>
-
 
