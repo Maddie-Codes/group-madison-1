@@ -10,6 +10,9 @@ public class Listing extends AbstractEntity {
     @ManyToOne
     private Variety variety;
 
+    @ManyToOne
+    private User user;
+
     @Enumerated(EnumType.STRING)
     private Maturity maturity; //enum Maturity
     @Size(max = 300)
@@ -31,6 +34,14 @@ public class Listing extends AbstractEntity {
 
     //getters and setters
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public Variety getVariety() {
         return variety;
