@@ -1,14 +1,17 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
-import jakarta.validation.Valid;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -17,21 +20,70 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
-    //________________________________________________________________________________________________display user page
-    //Use of path variable will change to getting userId from request or from session when auth workflow is implemented
-    @GetMapping("/{userId}")
-    public String displayUserPage(@PathVariable int userId, Model model) {
-        Optional optUser = userRepository.findById(userId);
-        if (optUser.isEmpty()) {
-            return "redirect:/";
+
+    private static final String userSessionKey = "user";
+
+    public User getUserFromSession(HttpSession session) {
+        Integer userId = (Integer) session.getAttribute(userSessionKey);
+        if (userId == null) {
+            return null;
         }
-        User currentUser = (User) optUser.get();
+
+        Optional<User> user = userRepository.findById(userId);
+
+        if(user.isEmpty()) {
+            return null;
+        }
+
+        return user.get();
+    }
+
+    private static void setUserInSession(HttpSession session, User user) {
+        session.setAttribute(userSessionKey, user.getId());
+    }
+
+    @GetMapping
+    public String setUser(HttpServletRequest request) {
+
+        Principal principal = request.getUserPrincipal();
+        String authUsername;
+        LoginType loginType = null;
+
+        if (principal instanceof OAuth2AuthenticationToken) {
+            // github
+            authUsername = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("login");
+            loginType = LoginType.OAUTH_GITHUB;
+
+            if (authUsername == null) {
+                // gmail
+                String tokenEmail = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
+                authUsername = tokenEmail.split("@")[0];
+                loginType = LoginType.OAUTH_GOOGLE;
+            }
+        } else {
+            authUsername = principal.getName();
+        }
+
+        User currentUser = userRepository.findByUsername(authUsername);
+
+        if (currentUser == null) {
+            User newUser = new User(authUsername, loginType);
+            userRepository.save(newUser);
+            currentUser = newUser;
+        }
+
+        setUserInSession(request.getSession(), currentUser);
+
+        return "redirect:/user/myDetails";
+    }
+
+    @GetMapping("/myDetails")
+    public String displayUserPage(HttpServletRequest request, Model model) {
+
+        User currentUser = getUserFromSession(request.getSession());
+
         model.addAttribute("user", currentUser);
 
         return "user/details";
     }
-
-
-    //________________________________________________________________________________________________
-
 }
