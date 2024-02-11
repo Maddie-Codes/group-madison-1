@@ -2,7 +2,9 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.Listing;
 import com.launchcode.violetSwap.models.Maturity;
+import com.launchcode.violetSwap.models.Variety;
 import com.launchcode.violetSwap.models.data.ListingRepository;
+import com.launchcode.violetSwap.models.data.VarietyRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,13 +22,15 @@ public class NewListingVarietyController {
 
     @Autowired
     private ListingRepository listingRepository;
+    @Autowired
+    private VarietyRepository varietyRepository;
 
     //________________________________________________________________________________________________user/new-listing.html - make a new listing
     @GetMapping("new-listing")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
-        //model.addAttribute("varieties", varietyRepository.findAll()); //note for future to pass in the available AV varieties, does not have to follow this naming convention/structure
-        model.addAttribute("maturityLevels", Maturity.values());//enum Maturity
+        model.addAttribute("availableVarieties", varietyRepository.findAll()); //pass in the available AV varieties
+        model.addAttribute("maturityLevels", Maturity.values());//pass in enum Maturity
         return "user/new-listing";
     }
 
@@ -37,12 +41,28 @@ public class NewListingVarietyController {
         } else{
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "redirect:user/details";
+        return "redirect:/details";
     }
     //________________________________________________________________________________________________
     //________________________________________________________________________________________________ user/new-variety.html - add a new variety
 
-    //in progress
 
+    @GetMapping("new-variety")
+    public String displayNewVarietyForm (Model model){
+        model.addAttribute(new Variety());
+        return"user/new-variety";
+    }
+
+    @PostMapping("new-variety")
+    public String processNewVarietyForm(@ModelAttribute @Valid Variety newVariety, Errors errors, Model model){
+        if(errors.hasErrors()){
+            model.addAttribute(new Variety());
+            return "user/new-variety";
+        } else{
+            varietyRepository.save(newVariety);
+
+        }
+        return "redirect:/user/new-listing";
+    }
     //________________________________________________________________________________________________
 }
