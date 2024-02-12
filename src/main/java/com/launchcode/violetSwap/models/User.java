@@ -52,6 +52,14 @@ public class User extends AbstractEntity {
         return encoder.matches(password, pwHash);
     }
 
+    public boolean hasRequiredDetails() {
+        if (this.email == null || this.zipcode == null) {
+            return false;
+        }
+
+        return true;
+    }
+
     public String getUsername() {
         return username;
     }
