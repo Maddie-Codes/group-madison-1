@@ -31,7 +31,7 @@ public class SearchController {
         return "/search/varieties";
     }
 
-    @GetMapping("/search/variety/{id}")//_________________________________________________Browse Listings in Variety
+    @GetMapping("/variety/{id}")//_________________________________________________Browse Listings in Variety
     public String showListingsForVariety(@RequestParam(required = false) String varietySearch, @PathVariable Integer id, Model model) {
         Variety selectedVariety = varietyRepository.findById(id).orElse(null);
 
@@ -48,9 +48,26 @@ public class SearchController {
         }
     }
 
-    //___________________________________________________________________________browse variety
+    //___________________________________________________________________________search for a variety
 
+    @GetMapping("/browse")
+    public String searchVarieties(Model model, @RequestParam(required = false) String varietySearch) {
+        List<Variety> varieties; //field for varieties
 
+        if (varietySearch != null && !varietySearch.isEmpty()) { //if varietySearch is present
+            Variety foundVariety = varietyRepository.findByName(varietySearch); //find the variety
+            if (foundVariety != null) { //if found variety is present, redirect to search/search/variety w/ the id
+                return "redirect:/search/variety/" + foundVariety.getId();
+            }
+            // Handle case when variety is not found
+            return "redirect:/search/varieties";
+        } else {
+            varieties = varietyRepository.findAll();
+        }
+
+        model.addAttribute("varieties", varieties);
+        return "search/varieties";
+    }
 
 
 
