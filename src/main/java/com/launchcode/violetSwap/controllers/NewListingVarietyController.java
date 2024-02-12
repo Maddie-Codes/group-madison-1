@@ -44,13 +44,9 @@ public class NewListingVarietyController {
     //________________________________________________________________________________________________user/new-listing.html - make a new listing
     @GetMapping("new-listing")
     public String displayNewListingForm(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession(); // get session
-
         model.addAttribute(new Listing());
         model.addAttribute("availableVarieties", varietyRepository.findAll()); //pass in the available AV varieties
         model.addAttribute("maturityLevels", Maturity.values());//pass in enum Maturity
-        model.addAttribute("user", session.getAttribute("user")); //pass in user from session
-        System.out.println("________________________________________________________________________________________________" + session.getAttribute("user") + "________________________________________________________________________________________________");
         return "user/new-listing";
     }
 
@@ -59,15 +55,20 @@ public class NewListingVarietyController {
         if (errors.hasErrors()){
             return "user/new-listing";
         } else{
+            //_______get user from session, and check it_____________________
+            HttpSession session = request.getSession(); // get session
+            Integer userId = (Integer) session.getAttribute("user"); //get userId from session
+            Optional<User> optionalUser = userRepository.findById(userId); //get optionalUser from id
+            if (optionalUser.isEmpty()){ //check if empty
+                return "user/new-listing";
+            }
+            User user = optionalUser.get(); //get user from optionalUser
+            //_________________________________________________________________
 
-//            HttpSession session = request.getSession(); // get session
-//            User theUser = (User) session.getAttribute("user"); //get user object from session
-//            newListing.setUser(theUser); //set the user for newListing
-
-
+            newListing.setUser(user); //set the user for newListing
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "redirect:/details";
+        return "redirect:/user/details";
     }
     //________________________________________________________________________________________________
     //________________________________________________________________________________________________ user/new-variety.html - add a new variety

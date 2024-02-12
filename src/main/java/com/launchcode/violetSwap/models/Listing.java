@@ -23,10 +23,9 @@ public class Listing extends AbstractEntity {
 
     }
 
-    public Listing(Variety variety,User user, Maturity maturity, String description){ //Initialize id and fields.
+    public Listing(Variety variety, Maturity maturity, String description){ //Initialize id and fields.
         super(); //for id
         this.variety = variety;
-        this.user = user;
         this.maturity = maturity;
         this.description = description;
     }
