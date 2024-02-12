@@ -35,22 +35,16 @@
         <p class="error" th:errors="${registerFormDTO.email}"></p>
     </div>
     <div class="form-group">
-        <label>City
-            <input th:field="${registerFormDTO.city}" class="form-control"/>
+        <label>Zipcode
+            <input th:field="${registerFormDTO.zipcode}" class="form-control"/>
         </label>
-        <p class="error" th:errors="${registerFormDTO.city}"></p>
-    </div>
-    <div class="form-group">
-        <label>State
-            <input th:field="${registerFormDTO.state}" class="form-control"/>
-        </label>
-        <p class="error" th:errors="${registerFormDTO.state}"></p>
+        <p class="error" th:errors="${registerFormDTO.zipcode}"></p>
     </div>
 
     <!-- Include CSRF token -->
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
-    <div class="form-group">`
+    <div class="form-group">
         <input type="submit" value="Register Now" class="btn"/>
     </div>
 </form>

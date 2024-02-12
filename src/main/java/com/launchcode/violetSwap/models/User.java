@@ -22,24 +22,13 @@ public class User extends AbstractEntity {
     private String username;
 
     @NotNull
-    @NotBlank
+    private String loginType;
+
     private String pwHash;
 
-    @NotNull
-    @NotBlank
-    @Email
     private String email;
 
-    @NotNull
-    @NotBlank
-    @Size(max=100)
-    private String city;
-
-    //Setting requirements for now, intending to lock this down to an enum or must come from google maps integration later on
-    @NotNull
-    @NotBlank
-    @Size(max=30)
-    private String state;
+    private String zipcode;
 
     @OneToMany (mappedBy = "user")
     private final List<Listing> Listings = new ArrayList<>();
@@ -47,13 +36,19 @@ public class User extends AbstractEntity {
 
     public User() {}
 
-    public User(String username, String password, String email, String city, String state) {
+    public User(String username, LoginType loginType) {
         super();
         this.username = username;
+        this.loginType = loginType.getType();
+    }
+
+    public User(String username, LoginType loginType, String password, String email, String zipcode) {
+        super();
+        this.username = username;
+        this.loginType = loginType.getType();
         this.pwHash = encoder.encode(password);
         this.email = email;
-        this.city = city;
-        this.state = state;
+        this.zipcode = zipcode;
     }
 
     public boolean isMatchingPassword(String password) {
@@ -80,20 +75,12 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
-    public String getCity() {
-        return city;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
 //    public List<Listing> getUserListings() {

@@ -1,14 +1,26 @@
 package com.launchcode.violetSwap.models.dto;
 
+import com.launchcode.violetSwap.models.LoginType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 public class RegisterFormDTO extends LoginFormDTO {
 
     private String confirmPassword;
 
+    private LoginType loginType = LoginType.FORM;
+
+    @NotNull
+    @NotBlank
+    @Email
     private String email;
 
-    private String city;
-
-    private String state;
+    @NotNull
+    @NotBlank
+    @Size(max=10)
+    private String zipcode;
 
     public String getConfirmPassword() {
         return confirmPassword;
@@ -18,6 +30,8 @@ public class RegisterFormDTO extends LoginFormDTO {
         this.confirmPassword = confirmPassword;
     }
 
+    public LoginType getLoginType() {return loginType;}
+
     public String getEmail() {
         return email;
     }
@@ -26,19 +40,12 @@ public class RegisterFormDTO extends LoginFormDTO {
         this.email = email;
     }
 
-    public String getCity() {
-        return city;
+    public String getZipcode() {
+        return zipcode;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
 }

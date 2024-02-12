@@ -9,9 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.token.Token;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -89,7 +87,7 @@ public class AuthenticationController {
 
         }
 
-        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getCity(), registerFormDTO.getState());
+        User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getLoginType(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getZipcode());
         userRepository.save(newUser);
         setUserInSession(request.getSession(), newUser);
 
