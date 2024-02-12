@@ -11,23 +11,28 @@
     <tr th:each="listing : ${listings}">
         <td th:text="${listing.id}"></td>
         <td width="150" height="100">
-<!--            <img th:src="${listing.variety.imgPath != null and listing.variety.imgPath != ''} ? ${listing.variety.imgPath} : '/img/DefaultImage.png'" alt="Default Image" />-->
+            <!--            <img th:src="${listing.variety.imgPath != null and listing.variety.imgPath != ''} ? ${listing.variety.imgPath} : '/img/DefaultImage.png'" alt="Default Image" />-->
         </td>
         <td>
             <div>
                 <label th:for="variety">Violet Variety:</label>
-                <label th:text="${listing.variety.name}"></label>
+                <span th:if="${listing.variety != null}" th:text="${listing.variety.name}"></span>
             </div>
             <div>
                 <label th:for="maturity">Violet Maturity:</label>
-                <label th:text="${listing.maturity.type}"></label>
+                <label th:text="${listing.maturity}"></label>
             </div>
             <div>
                 <label th:for="maturity">Details:</label>
                 <label th:text="${listing.description}"></label>
             </div>
         </td>
-
+        <td width="50" >
+            <!-- Add an "Update" button -->
+            <form th:action="@{/user/update/{id}(id=${listing.id})}" method="get">
+                <button type="submit">Update</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
