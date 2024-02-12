@@ -1,5 +1,7 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.Listing;
+import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,11 @@ public class SearchController {
     @GetMapping("/search/variety/{id}")//_________________________________________________Browse Listings in Variety
     public String showListingsForVariety(@RequestParam(required = false) String varietySearch, @PathVariable Integer id, Model model) {
         Variety selectedVariety = varietyRepository.findById(id).orElse(null);
+
+//        if(!varietySearch.isEmpty()){
+//
+//        }
+
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
             model.addAttribute("selectedVariety", selectedVariety);
@@ -43,22 +50,8 @@ public class SearchController {
 
     //___________________________________________________________________________browse variety
 
-//    @GetMapping("/browse")
-//    public String browseVarieties(Model model, @RequestParam(required = false) String varietySearch) {
-//        List<Variety> varieties;
-//        if (varietySearch != null && !varietySearch.isEmpty()) {
-//            Variety foundVariety = varietyRepository.findByName(varietySearch);
-//            if (foundVariety != null) {
-//                return "redirect:/search/search/variety/" + foundVariety.getId();
-//            }
-//            // Handle case when variety is not found
-//            return "redirect:/search";
-//        } else {
-//            varieties = varietyRepository.findAll();
-//        }
-//        model.addAttribute("varieties", varieties);
-//        return "search/varieties";
-//    }
+
+
 
 
 }
