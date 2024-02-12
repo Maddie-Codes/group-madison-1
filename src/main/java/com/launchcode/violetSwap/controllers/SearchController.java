@@ -1,5 +1,6 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.Listing;
 import com.launchcode.violetSwap.models.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
