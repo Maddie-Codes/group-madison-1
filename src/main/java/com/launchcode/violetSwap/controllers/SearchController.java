@@ -29,7 +29,7 @@ public class SearchController {
         return "/search/varieties";
     }
 
-    @GetMapping("/search/variety/{id}")
+    @GetMapping("/search/variety/{id}")//_________________________________________________Browse Listings in Variety
     public String showListingsForVariety(@RequestParam(required = false) String varietySearch, @PathVariable Integer id, Model model) {
         Variety selectedVariety = varietyRepository.findById(id).orElse(null);
         if (selectedVariety != null) {
@@ -43,22 +43,22 @@ public class SearchController {
 
     //___________________________________________________________________________browse variety
 
-    @GetMapping("/browse")
-    public String browseVarieties(Model model, @RequestParam(required = false) String varietySearch) {
-        List<Variety> varieties;
-        if (varietySearch != null && !varietySearch.isEmpty()) {
-            Variety foundVariety = varietyRepository.findByName(varietySearch);
-            if (foundVariety != null) {
-                return "redirect:/search/search/variety/" + foundVariety.getId();
-            }
-            // Handle case when variety is not found
-            return "redirect:/search";
-        } else {
-            varieties = varietyRepository.findAll();
-        }
-        model.addAttribute("varieties", varieties);
-        return "search/varieties";
-    }
+//    @GetMapping("/browse")
+//    public String browseVarieties(Model model, @RequestParam(required = false) String varietySearch) {
+//        List<Variety> varieties;
+//        if (varietySearch != null && !varietySearch.isEmpty()) {
+//            Variety foundVariety = varietyRepository.findByName(varietySearch);
+//            if (foundVariety != null) {
+//                return "redirect:/search/search/variety/" + foundVariety.getId();
+//            }
+//            // Handle case when variety is not found
+//            return "redirect:/search";
+//        } else {
+//            varieties = varietyRepository.findAll();
+//        }
+//        model.addAttribute("varieties", varieties);
+//        return "search/varieties";
+//    }
 
 
 }
