@@ -11,12 +11,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-@MappedSuperclass //no table for Search
+//@MappedSuperclass //no table for Search
 public class Search {
 
+    @Autowired
     private ListingRepository listingRepository;
+
+    @Autowired
     private UserRepository userRepository;
+
+    @Autowired
     private VarietyRepository varietyRepository;
+
     //TODO: intelliJ says .findAll() will return a null pointer exception?
     private final Iterable<Listing> availableListings = listingRepository.findAll(); //get available listings
     private final Iterable<User> availableUsers = userRepository.findAll();
@@ -29,11 +35,13 @@ public class Search {
     List<Variety> filteredVarieties;
 
 
+    public Search(){
+        //default constructor?
+    }
 
 
-
-    //remove extra parts from the search term to make it easier to search with
-    public static String removeExtraChars(String string){
+    //remove extra parts from the search term and capitalize it to make it easier to search with
+    public String removeExtraChars(String string){
         String fixedString = string.toUpperCase(); // case insensitive (Uppercase)
         List<String> removeThese = Arrays.asList( "'", "-", "_", Character.toString('"')); //array [ ', -, _, "]
 
@@ -56,7 +64,7 @@ public class Search {
         List<String> searchItems = makeSearchTerm(search); //make search parameter into a list of Strings (searchItems)
         for(Variety variety : availableVarieties){ //For each variety
             int counter = searchItems.size();
-            String varietyName = variety.getSearchTerm(); //get searchTerm of the variety.
+            String varietyName = removeExtraChars(variety.getName()); //get searchTerm of the variety.
             for(String searchItem : searchItems){ //For each searchItem
                 if (varietyName.contains(searchItem)){ //check if varietyName contains the searchItem.
                     counter --; //if yes, mark it and move to next searchItem

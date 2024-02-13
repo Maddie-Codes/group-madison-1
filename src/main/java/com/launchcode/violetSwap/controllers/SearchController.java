@@ -1,16 +1,14 @@
 package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.Listing;
+import com.launchcode.violetSwap.models.Search;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import com.launchcode.violetSwap.models.data.VarietyRepository;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -22,17 +20,24 @@ public class SearchController {
     @Autowired
     private VarietyRepository varietyRepository;
 
+    @Autowired
+    private Search search; //instance of search, so we can call search methods
 
 
-    @GetMapping("/browse-varieties")//_________________________________________________Browse Varieties
-    public String showVarieties(Model model) {
+
+
+    @GetMapping("/varieties")//_________________________________________________Browse All Varieties
+    public String browseVarieties(Model model) {
         List<Variety> varieties = varietyRepository.findAll();
+        String varietySearch = null;
         model.addAttribute("varieties", varieties);
+        model.addAttribute("varietySearch", varietySearch);
         return "/search/varieties";
     }
 
     @GetMapping("/variety/{id}")//_________________________________________________Show Listings in selected Variety
-    public String showListingsForVariety(@RequestParam(required = false) String varietySearch, @PathVariable Integer id, Model model) {
+    public String showListingsForVariety( @PathVariable Integer id, Model model) {
+
         Variety selectedVariety = varietyRepository.findById(id).orElse(null);
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
@@ -43,25 +48,32 @@ public class SearchController {
         }
     }
 
-    //___________________________________________________________________________search for a variety
 
-    @GetMapping("/varieties")
-    public String searchVarieties(Model model, @RequestParam(required = false) String varietySearch) {
+
+    @PostMapping("/varieties")//_____________________________________________________________search for a variety
+    public String searchVarieties(Model model, String varietySearch) {
         List<Variety> varieties; //field for varieties
 
         if (varietySearch != null && !varietySearch.isEmpty()) { //if varietySearch is present
-            Variety foundVariety = varietyRepository.findByName(varietySearch); //find the variety
-            if (foundVariety != null) { //if found variety is present, redirect to search/search/variety w/ the id
-                return "redirect:/search/variety/" + foundVariety.getId();
+
+            List<Variety> varietyList = search.searchVarieties(varietySearch); //search for variety, returns a list of varieties that contain the search term(s)
+
+            if (varietyList != null) { //if varietyList is present
+                if (varietyList.size() == 1){//if there's only 1 variety in varietyList, redirect to search/variety w/ the id.
+                    Variety singleVariety = varietyList.get(0);
+                    return "redirect:/search/variety/" + singleVariety.getId();
+                }else{ //if there are multiple varieties in varietyList, add them to model, and return "search/varieties"
+                    model.addAttribute("varieties",varietyList);
+                    return "search/varieties";
+                }
             }
-            // Handle case when variety is not found
+
+            // if variety is not found, return to browse-varieties
             return "redirect:/search/varieties";
-        } else {
-            varieties = varietyRepository.findAll();
         }
 
-        model.addAttribute("varieties", varieties);
-        return "search/varieties";
+        //if varietySearch is null or empty, return to search/browse-varieties
+        return "redirect:/search/varieties";
     }
 
 
