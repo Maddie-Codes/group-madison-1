@@ -52,20 +52,30 @@ public class NewListingVarietyController {
 
     @PostMapping("new-listing")
     public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, Model model, HttpServletRequest request){
+
         if (errors.hasErrors()){
             return "user/new-listing";
         } else{
+
             //_______get user from session, and check it_____________________
             HttpSession session = request.getSession(); // get session
             Integer userId = (Integer) session.getAttribute("user"); //get userId from session
+            System.out.println("____________________________________" + session.getAttribute("user") + "____________________________________");
+            System.out.println("____________________________________" + userId + "____________________________________");
+            //TODO: code breaks here!! VV userId is null now????
             Optional<User> optionalUser = userRepository.findById(userId); //get optionalUser from id
+
             if (optionalUser.isEmpty()){ //check if empty
+
                 return "user/new-listing";
             }
+
             User user = optionalUser.get(); //get user from optionalUser
+
             //_________________________________________________________________
 
             newListing.setUser(user); //set the user for newListing
+
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
         return "redirect:/user/details";

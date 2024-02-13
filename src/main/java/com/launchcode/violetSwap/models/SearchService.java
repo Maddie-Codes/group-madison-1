@@ -6,6 +6,7 @@ import com.launchcode.violetSwap.models.data.VarietyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,21 +22,10 @@ public class SearchService {
     @Autowired
     private VarietyRepository varietyRepository;
 
-    //TODO: intelliJ says .findAll() will return a null pointer exception?
-    private final Iterable<Listing> availableListings = listingRepository.findAll(); //get available listings
-    private final Iterable<User> availableUsers = userRepository.findAll();
-    private final Iterable<Variety> availableVarieties = varietyRepository.findAll();
-
-
     //fields for filtered listings and users:
     List<Listing> filteredListings;
     List<User> filteredUsers;
-    List<Variety> filteredVarieties;
-
-
-    public SearchService(){
-        //default constructor?
-    }
+    List<Variety> filteredVarieties = new ArrayList<Variety>();
 
 
     //remove extra parts from the search term and capitalize it to make it easier to search with
@@ -59,21 +49,34 @@ public class SearchService {
 
     //search for varieties
     public List<Variety> searchVarieties(String search){
+        System.out.println("__________________________________________________________search: " + search + "__________________________________________________________");
         List<String> searchItems = makeSearchTerm(search); //make search parameter into a list of Strings (searchItems)
-        for(Variety variety : availableVarieties){ //For each variety
+        System.out.println("__________________________________________________________searchItems: " + searchItems + "__________________________________________________________");
+        for(Variety variety : varietyRepository.findAll()){ //For each variety
+            System.out.println("__________________________________________________________variety: " + variety.getName() + "__________________________________________________________");
             int counter = searchItems.size();
+            System.out.println("__________________________________________________________counter: " + counter + "__________________________________________________________");
             String varietyName = removeExtraChars(variety.getName()); //get searchTerm of the variety.
+            System.out.println("__________________________________________________________searchTerm of VarietyName" + varietyName + "__________________________________________________________");
             for(String searchItem : searchItems){ //For each searchItem
+                System.out.println("__________________________________________________________searchItem: " + searchItem + "__________________________________________________________");
                 if (varietyName.contains(searchItem)){ //check if varietyName contains the searchItem.
+                    System.out.println("__________________________________________________________" + "searchItem is in VarietyName" + "__________________________________________________________");
                     counter --; //if yes, mark it and move to next searchItem
+                    System.out.println("__________________________________________________________updated counter: " + counter + "__________________________________________________________");
                     if (counter == 0){//once counter reaches 0, all search items have been found in varietyName, and that variety can be added to the list.
+                        System.out.println("__________________________________________________________" + "counter at 0" + "__________________________________________________________");
                         filteredVarieties.add(variety);
+                        System.out.println("__________________________________________________________filteredVarieties: " + filteredVarieties + "__________________________________________________________");
+
                     }
                 } else{
+                    System.out.println("__________________________________________________________" + "varietyName not in searchItem" + "__________________________________________________________");
                     break;
                 }
             }
         }
+        System.out.println("__________________________________________________________" + "returning filteredVarieties" + "__________________________________________________________");
         return filteredVarieties;
     }
 
@@ -83,7 +86,7 @@ public class SearchService {
     //search Users by zipcode
     public List<User> filterUsersByZipcode(String searchZip){
         Integer searchZipcode = Integer.valueOf(searchZip);
-        for(User user : availableUsers){
+        for(User user : userRepository.findAll()){
             if(user.getZipcode().equals(searchZipcode)){ //if the search term equals the zipcode, add it to filteredLocationUsers
                 filteredUsers.add(user);
             }
@@ -121,7 +124,7 @@ public class SearchService {
     //search for users
     public List<User> searchUsers(String search){
         search = search.toUpperCase();
-        for(User user : availableUsers){ //for every user
+        for(User user : userRepository.findAll()){ //for every user
             if(user.getUsername().toUpperCase().contains(search)){ //if they contain the search term, save in filteredUsers
                 filteredUsers.add(user);
             }
