@@ -13,10 +13,21 @@ public class Listing extends AbstractEntity {
     @ManyToOne
     private User user;
 
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
+
     @Enumerated(EnumType.STRING)
     private Maturity maturity; //enum Maturity
     @Size(max = 300)
     private String description;
+
+    @Column(length = 1000)
+    private String imagePath;
 
     //constructors
     public Listing() {
