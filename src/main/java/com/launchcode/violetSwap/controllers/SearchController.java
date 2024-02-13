@@ -1,8 +1,6 @@
 package com.launchcode.violetSwap.controllers;
 
-import com.launchcode.violetSwap.models.Listing;
-import com.launchcode.violetSwap.models.Search;
-import com.launchcode.violetSwap.models.User;
+import com.launchcode.violetSwap.models.SearchService;
 import com.launchcode.violetSwap.models.Variety;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +17,8 @@ public class SearchController {
 
     @Autowired
     private VarietyRepository varietyRepository;
-
-    private Search search; //instance of search, so we can call search methods
+    @Autowired
+    private SearchService searchService; //instance of searchService, so we can call search methods
 
 
 
@@ -53,7 +51,7 @@ public class SearchController {
 
         if (varietySearch != null && !varietySearch.isEmpty()) { //if varietySearch is present
 
-            List<Variety> varietyList = search.searchVarieties(varietySearch); //search for variety, returns a list of varieties that contain the search term(s)
+            List<Variety> varietyList = searchService.searchVarieties(varietySearch); //search for variety, returns a list of varieties that contain the search term(s)
 
             if (varietyList != null) { //if varietyList is present
 

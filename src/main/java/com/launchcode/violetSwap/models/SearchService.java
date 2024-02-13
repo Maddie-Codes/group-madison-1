@@ -3,16 +3,14 @@ package com.launchcode.violetSwap.models;
 import com.launchcode.violetSwap.models.data.ListingRepository;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.data.VarietyRepository;
-import jakarta.persistence.MappedSuperclass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-//@MappedSuperclass //no table for Search
-public class Search {
+@Service
+public class SearchService {
 
     @Autowired
     private ListingRepository listingRepository;
@@ -35,7 +33,7 @@ public class Search {
     List<Variety> filteredVarieties;
 
 
-    public Search(){
+    public SearchService(){
         //default constructor?
     }
 
