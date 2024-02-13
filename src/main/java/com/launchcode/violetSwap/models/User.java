@@ -1,6 +1,8 @@
 package com.launchcode.violetSwap.models;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,8 +30,9 @@ public class User extends AbstractEntity {
 
     private String zipcode;
 
+    @OneToMany (mappedBy = "user")
+    private final List<Listing> Listings = new ArrayList<>();
 
-//    private List<Listing> userListings = new ArrayList<>();
 
     public User() {}
 
