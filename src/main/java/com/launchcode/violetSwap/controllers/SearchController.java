@@ -25,6 +25,10 @@ public class SearchController {
 
     @GetMapping("/varieties")//_________________________________________________Browse All Varieties and can search
     public String searchVarieties(Model model) {
+
+        //optional searchParam/query in url?
+        //if searchParam is present, do the thing
+
         List<Variety> varieties = varietyRepository.findAll();
         model.addAttribute("varieties", varieties);
         return "/search/varieties";
@@ -60,14 +64,15 @@ public class SearchController {
                     return "redirect:/search/variety/" + singleVariety.getId();
 
                 }else{ //if there are multiple varieties in varietyList, add them to model, and return "search/varieties"
-                    model.addAttribute("varieties",varietyList);
-                    return "search/varieties";
+//                    model = null; //reset model?? nope, bad. Model can't be null
+                    model.addAttribute("varieties",varietyList); //add varieties
+                    return "/search/varieties";
                 }
             }
-            // if varietylist is not found, return to browse-varieties
+            // if varietylist is not found, return to search/varieties
             return "redirect:/search/varieties";
         }
-        //if varietySearch is null or empty, return to search/browse-varieties
+        //if varietySearch is null or empty, return to search/varieties
         return "redirect:/search/varieties";
     }
 

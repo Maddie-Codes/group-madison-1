@@ -57,6 +57,7 @@ public class NewListingVarietyController {
             return "user/new-listing";
         } else{
 
+            //User currentUser = getUserFromSession(request.getSession()); //use this code!!!
             //_______get user from session, and check it_____________________
             HttpSession session = request.getSession(); // get session
             Integer userId = (Integer) session.getAttribute("user"); //get userId from session
