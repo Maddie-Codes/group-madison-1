@@ -11,21 +11,9 @@
     <thead></thead>
     <tr th:each="listing : ${listings}">
         <td>
-            <!-- Outputting listing.user -->
-            <p th:text="${listing.user}"></p>
-            <!-- Outputting the user ID with null check -->
-            <p th:if="${listing.user != null}" th:text="${listing.user.id}"></p>
-
-
-            <!-- Outputting listing.user.id -->
-<!--            <p th:text="${listing.user.id}"></p>-->
-
-
-            <!--            <input type="text" th:value="${listing.user.id}"/>-->
         </td>
-        <td th:text="${listing.id}"></td>
         <td width="150" height="100">
-            <!--            <img th:src="${listing.variety.imgPath != null and listing.variety.imgPath != ''} ? ${listing.variety.imgPath} : '/img/DefaultImage.png'" alt="Default Image" />-->
+            <img th:src="${listing.imagePath != null} ? @{/img/${listing.imagePath}} : @{/img/Defaultimage.png}" alt="Listing Image" />
         </td>
         <td>
             <div>
@@ -42,12 +30,6 @@
             </div>
         </td>
         <td width="50">
-            <!-- Add an "Update" button -->
-<!--&lt;!&ndash;            <form th:action="@{/user/update/{id}(id=${listing.id})}" method="get">&ndash;&gt;-->
-<!--            <form th:action="@{/user/update/{id}(id=${listing.id})}" method="get">-->
-
-<!--            <button type="submit">Update</button>-->
-<!--            </form>-->
             <span th:if="${listing.user != null && listing.user.id != null}">
     <a th:href="@{/user/update/{id}(id=${listing.id})}">Update</a>
 </span>

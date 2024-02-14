@@ -130,7 +130,7 @@ public class NewListingVarietyController {
         return "search/listings";
     }
 
-    
+
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable Integer id, Model model, HttpServletRequest request) {
         if (id == null) {
@@ -163,7 +163,11 @@ public class NewListingVarietyController {
             listingRepository.save(existingListing);
 
         }
-        return "user/details";
+        List<Listing> listings = listingRepository.findAll();
+        model.addAttribute("userId",userId);
+        model.addAttribute("maturityLevels", Maturity.values());
+        model.addAttribute("listings", listings);
+        return "search/listings";
     }
 
 
