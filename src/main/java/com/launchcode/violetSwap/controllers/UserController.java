@@ -3,12 +3,16 @@ package com.launchcode.violetSwap.controllers;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
+import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
+import com.launchcode.violetSwap.models.dto.UpdateFormDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -82,8 +86,44 @@ public class UserController {
 
         User currentUser = getUserFromSession(request.getSession());
 
+        if (!currentUser.hasRequiredDetails()) {
+            return "redirect:/user/update";
+        }
+
         model.addAttribute("user", currentUser);
 
         return "user/details";
+    }
+
+    @GetMapping("/update")
+    public String displayUpdateUserDetailsForm(HttpServletRequest request, Model model) {
+        User currentUser = getUserFromSession(request.getSession());
+        model.addAttribute(new UpdateFormDTO());
+        model.addAttribute("title", "Please Update Your User Profile");
+        model.addAttribute("subtitle", "We need a little more information in your profile for the features of this site.");
+        model.addAttribute("user", currentUser);
+
+        return "user/update";
+    }
+
+    @PostMapping("/update")
+    public String processUpdateUserDetailsForm(@ModelAttribute @Valid UpdateFormDTO updateFormDTO, Errors errors,
+                                               HttpServletRequest request, Model model) {
+        User currentUser = getUserFromSession(request.getSession());
+
+        if(errors.hasErrors()) {
+            model.addAttribute("title", "Please Update Your User Profile");
+            model.addAttribute("subtitle", "We need a little more information in your profile for the features of this site.");
+            model.addAttribute("user", currentUser);
+            return "user/update";
+        }
+
+
+        currentUser.setEmail(updateFormDTO.getEmail());
+        currentUser.setZipcode(updateFormDTO.getZipcode());
+
+        userRepository.save(currentUser);
+
+        return "redirect:/user/myDetails";
     }
 }
