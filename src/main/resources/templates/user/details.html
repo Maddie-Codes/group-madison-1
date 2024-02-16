@@ -1,17 +1,37 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Violet Swap</title>
-</head>
+<!--<head>-->
+<!--    <meta charset="UTF-8"/>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+<!--    <title>User Details</title>-->
+<!--</head>-->
+<head th:replace="~{fragments :: head}"></head>
 <body>
 
-<h1>User Profile</h1>
-<div  th:if="${user != null}">
-<h3 th:text="${user.username}"></h3>
+<nav th:replace="~{fragments :: page-header}"></nav>
+<div>
+    <!--    //<div th:include="fragments/header :: header"></div>-->
+
+
+
+    <div>
+
+        <table>
+            <tr>
+                <td>
+
+                </td>
+                <td>
+                    <div th:if="${user != null}">
+                        <h3 th:text="${user.username}"></h3>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+
+            </tr>
+        </table>
+    </div>
 </div>
-    <!-- <h4 th:text="${user.zipcode}"></h4>-->
-
-
 </body>
 </html>

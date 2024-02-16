@@ -1,12 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org/">
+
+<head th:fragment="head">
+
+    <!-- Bootstrap stylesheets and script -->
+    <link th:href="@{/css/bootstrap.css}" rel="stylesheet" />
+    <link th:href="@{/css/violet.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/bootstrap.js}"></script>
+
+    <title th:text="'Violet Swap' + ${title == null ? '' : ' :: ' + title}">Violet Swap</title>
 </head>
+
 <body>
+
+<div th:fragment="page-header" class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a th:href="@{/}" class="navbar-brand">Violet Swap</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li><a th:href="@{/user/myDetails}">Home</a></li>
+                <li><a th:href="@{/user/new-listing}">Add Listing</a></li>
+                <li><a th:href="@{/user/listings}">View Listing</a></li>
+                <li><a th:href="@{/search/varieties}">Browse Variety</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
-
-
