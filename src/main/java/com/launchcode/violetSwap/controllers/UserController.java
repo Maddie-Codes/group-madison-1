@@ -3,7 +3,6 @@ package com.launchcode.violetSwap.controllers;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
-import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
 import com.launchcode.violetSwap.models.dto.UpdateFormDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -90,6 +89,7 @@ public class UserController {
             return "redirect:/user/update";
         }
 
+        model.addAttribute("isCurrentUser", true);
         model.addAttribute("user", currentUser);
 
         return "user/details";
@@ -125,5 +125,21 @@ public class UserController {
         userRepository.save(currentUser);
 
         return "redirect:/user/myDetails";
+    }
+
+    @GetMapping("/{username}")
+    public String displayUserDetails(@PathVariable String username, HttpServletRequest request, Model model) {
+        User userToDisplay = userRepository.findByUsername(username);
+        User currentUser = getUserFromSession(request.getSession());
+        Boolean isCurrentUser = userToDisplay.equals(currentUser);
+
+        if (userToDisplay == null) {
+            return "user/details";
+        }
+
+        model.addAttribute("isCurrentUser", isCurrentUser);
+        model.addAttribute("user", userToDisplay);
+
+        return "user/details";
     }
 }

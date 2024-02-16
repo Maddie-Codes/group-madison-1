@@ -7,10 +7,16 @@
 <body>
 
 <h1>User Profile</h1>
-<div  th:if="${user != null}">
-<h3 th:text="${user.username}"></h3>
+<div th:if="${isCurrentUser}">
+    <h2>Hello Current User!</h2>
 </div>
-    <!-- <h4 th:text="${user.zipcode}"></h4>-->
+<div  th:if="${user != null}">
+    <h3 th:text="${user.username}"></h3>
+    <h4 th:text="${user.zipcode}"></h4>
+</div>
+<div th:unless="${user != null}">
+    <h2>This user does not exist!</h2>
+</div>
 
 
 </body>
