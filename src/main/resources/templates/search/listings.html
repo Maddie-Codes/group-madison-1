@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listings</title>
+</head>
+<body>
+<h1>Listings</h1>
+
+<table border="1">
+    <thead></thead>
+    <tr th:each="listing : ${listings}">
+        <td>
+        </td>
+        <td width="150" height="100">
+            <img th:src="${listing.imagePath != null} ? @{/img/${listing.imagePath}} : @{/img/Defaultimage.png}" alt="Listing Image" />
+        </td>
+        <td>
+            <div>
+                <label th:for="variety">Violet Variety:</label>
+                <span th:if="${listing.variety != null}" th:text="${listing.variety.name}"></span>
+            </div>
+            <div>
+                <label th:for="maturity">Violet Maturity:</label>
+                <label th:text="${listing.maturity.type}"></label>
+            </div>
+            <div>
+                <label th:for="maturity">Details:</label>
+                <label th:text="${listing.description}"></label>
+            </div>
+        </td>
+        <td width="50">
+            <span th:if="${listing.user != null && listing.user.id != null}">
+    <a th:href="@{/user/update/{id}(id=${listing.id})}">Update</a>
+</span>
+            <span th:unless="${listing.user != null && listing.user.id != null}">
+    <span>Update</span>
+</span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

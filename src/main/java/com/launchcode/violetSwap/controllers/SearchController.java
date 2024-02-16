@@ -5,55 +5,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import com.launchcode.violetSwap.models.data.VarietyRepository;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-
+//connects to search/varieties, and search/variety/{id}
 @Controller
-@RequestMapping("/varieties")
-public class VarietyController {
+@RequestMapping("/search")
+public class SearchController {
 
     @Autowired
-    private VarietyRepository varietiesRepository;
+    private VarietyRepository varietyRepository;
 
-    @GetMapping
+
+
+    @GetMapping("/varieties")//_________________________________________________Browse Varieties
     public String showVarieties(Model model) {
-        List<Variety> varieties = varietiesRepository.findAll();
+        List<Variety> varieties = varietyRepository.findAll();
         model.addAttribute("varieties", varieties);
-        return "browse/varieties";
+        return "/search/varieties";
     }
 
     @GetMapping("/search/variety/{id}")
-    public String showListingsForVariety(@PathVariable Integer id, @RequestParam(required = false) String varietySearch, Model model) {
-        Variety selectedVariety = varietiesRepository.findById(id).orElse(null);
-
+    public String showListingsForVariety(@RequestParam(required = false) String varietySearch, @PathVariable Integer id, Model model) {
+        Variety selectedVariety = varietyRepository.findById(id).orElse(null);
         if (selectedVariety != null) {
             model.addAttribute("listings", selectedVariety.getListings());
             model.addAttribute("selectedVariety", selectedVariety);
-            return "browse/listing";
+            return "/search/listings";
         } else {
-            return "redirect:/varieties";
+            return "redirect:/search/varieties";
         }
     }
+
+    //___________________________________________________________________________browse variety
 
     @GetMapping("/browse")
     public String browseVarieties(Model model, @RequestParam(required = false) String varietySearch) {
         List<Variety> varieties;
         if (varietySearch != null && !varietySearch.isEmpty()) {
-            Variety foundVariety = varietiesRepository.findByName(varietySearch);
+            Variety foundVariety = varietyRepository.findByName(varietySearch);
             if (foundVariety != null) {
-                return "redirect:/varieties/search/variety/" + foundVariety.getId();
+                return "redirect:/search/search/variety/" + foundVariety.getId();
             }
             // Handle case when variety is not found
-            return "redirect:/varieties";
+            return "redirect:/search";
         } else {
-            varieties = varietiesRepository.findAll();
+            varieties = varietyRepository.findAll();
         }
         model.addAttribute("varieties", varieties);
-        return "browse/varieties";
+        return "search/varieties";
     }
+
+
 }
