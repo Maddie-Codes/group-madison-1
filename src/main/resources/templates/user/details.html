@@ -7,15 +7,39 @@
 <body>
 
 <h1>User Profile</h1>
-<div th:if="${isCurrentUser}">
-    <h2>Hello Current User!</h2>
-</div>
-<div  th:if="${user != null}">
-    <h3 th:text="${user.username}"></h3>
-    <h4 th:text="${user.zipcode}"></h4>
-</div>
+
+<th:block  th:if="${user != null}">
+    <div th:if="${isCurrentUser}">
+        <h2>Hello Current User!</h2>
+    </div>
+    <div>
+        <h3 th:text="${user.username}"></h3>
+        <h4 th:text="${user.zipcode}"></h4>
+    </div>
+    <div>
+        <form th:action="@{/user/contact}" method="post">
+            <input type="hidden" th:name="recipient" th:value="${user.email}"/>
+            <label>Subject
+                <input th:field="emailSubject" class="form-control"/>
+            </label>
+            <label>Message
+                <textarea th:field="emailBody"></textarea>
+            </label>
+
+            <!-- Include CSRF token -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <input type="submit" value="Send Message" class="btn"/>
+        </form>
+    </div>
+</th:block>
+
 <div th:unless="${user != null}">
     <h2>This user does not exist!</h2>
+</div>
+
+<div>
+    <form></form>
 </div>
 
 

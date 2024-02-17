@@ -142,4 +142,13 @@ public class UserController {
 
         return "user/details";
     }
+
+//    @PostMapping("/contact")
+//    public String sendMessageToUser(@RequestParam String email, String subject, String body,
+//                                    Errors errors, HttpServletRequest request, Model model) {
+//        if (errors.hasErrors()) {
+//            return "could not send message";
+//        }
+//
+//    }
 }
