@@ -54,7 +54,7 @@ public class NewListingVarietyController {
     public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, Model model, HttpServletRequest request){
 
         if (errors.hasErrors()){
-            return "user/new-listing";
+            return "redirect:/user/new-listing";
         } else{
 
             //User currentUser = getUserFromSession(request.getSession()); //use this code!!!
