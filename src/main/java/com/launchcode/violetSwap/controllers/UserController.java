@@ -1,5 +1,6 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.Email;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
@@ -90,7 +91,7 @@ public class UserController {
         }
 
         model.addAttribute("isCurrentUser", true);
-        model.addAttribute("user", currentUser);
+        model.addAttribute("displayedUser", currentUser);
 
         return "user/details";
     }
@@ -138,17 +139,11 @@ public class UserController {
         }
 
         model.addAttribute("isCurrentUser", isCurrentUser);
-        model.addAttribute("user", userToDisplay);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("displayedUser", userToDisplay);
+        model.addAttribute("emailToSend", new Email());
 
         return "user/details";
     }
 
-//    @PostMapping("/contact")
-//    public String sendMessageToUser(@RequestParam String email, String subject, String body,
-//                                    Errors errors, HttpServletRequest request, Model model) {
-//        if (errors.hasErrors()) {
-//            return "could not send message";
-//        }
-//
-//    }
 }
