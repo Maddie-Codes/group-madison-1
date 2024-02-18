@@ -1,6 +1,5 @@
-package com.launchcode.violetSwap.config;
+package com.launchcode.violetSwap.security;
 
-import com.launchcode.violetSwap.security.CustomAuthenticationProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,6 +19,9 @@ public class SecurityConfig {
 
     @Autowired
     private CustomAuthenticationProvider customAuthProvider;
+
+    @Autowired
+    AuthSuccessHandler authenticationSuccessHandler;
 
     //Create an auth bean for spring security to use to create and track auth
     @Bean
@@ -48,14 +50,12 @@ public class SecurityConfig {
         //Allow users to authenticate via a login form, use the custom login page for this purpose and on successful auth route to "/secured"
         http.formLogin((form) -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/user")
-                        .permitAll());
+                        .permitAll().successHandler(authenticationSuccessHandler));
 
         //Allow user to authenticate via oauth2, use the custom login page for this purpose
-        http.oauth2Login((oauth2 -> oauth2
+        http.oauth2Login(oauth2 -> oauth2
                         .loginPage("/login")
-                        .defaultSuccessUrl("/user")
-                        .permitAll()));
+                        .permitAll().successHandler(authenticationSuccessHandler));
 
         http.logout((logout) -> logout
                         .permitAll());
