@@ -42,45 +42,6 @@ public class UserController {
         return user.get();
     }
 
-    private static void setUserInSession(HttpSession session, User user) {
-        session.setAttribute(userSessionKey, user.getId());
-    }
-
-    @GetMapping
-    public String setUser(HttpServletRequest request) {
-
-        Principal principal = request.getUserPrincipal();
-        String authUsername;
-        LoginType loginType = null;
-
-        if (principal instanceof OAuth2AuthenticationToken) {
-            // github
-            authUsername = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("login");
-            loginType = LoginType.OAUTH_GITHUB;
-
-            if (authUsername == null) {
-                // gmail
-                String tokenEmail = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
-                authUsername = tokenEmail.split("@")[0];
-                loginType = LoginType.OAUTH_GOOGLE;
-            }
-        } else {
-            authUsername = principal.getName();
-        }
-
-        User currentUser = userRepository.findByUsername(authUsername);
-
-        if (currentUser == null) {
-            User newUser = new User(authUsername, loginType);
-            userRepository.save(newUser);
-            currentUser = newUser;
-        }
-
-        setUserInSession(request.getSession(), currentUser);
-
-        return "redirect:/user/myDetails";
-    }
-
     @GetMapping("/myDetails")
     public String displayUserPage(HttpServletRequest request, Model model) {
 

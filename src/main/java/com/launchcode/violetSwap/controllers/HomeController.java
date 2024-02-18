@@ -9,13 +9,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "index";
+        return "redirect:/user/myDetails";
     }
 
-    @GetMapping("/secured")
-    public String secured() {
-
-        return "home";
-
-    }
 }
