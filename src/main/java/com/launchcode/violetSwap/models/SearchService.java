@@ -23,8 +23,8 @@ public class SearchService {
     private VarietyRepository varietyRepository;
 
     //fields for filtered listings and users:
-    List<Listing> filteredListings;
-    List<User> filteredUsers;
+    List<Listing> filteredListings = new ArrayList<Listing>();
+    List<User> filteredUsers = new ArrayList<User>();
     List<Variety> filteredVarieties = new ArrayList<Variety>();
 
 

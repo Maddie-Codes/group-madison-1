@@ -2,6 +2,7 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
+import com.launchcode.violetSwap.models.UserService;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -20,23 +21,11 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     private static final String userSessionKey = "user";
 
-    public User getUserFromSession(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
-        if (userId == null) {
-            return null;
-        }
-
-        Optional<User> user = userRepository.findById(userId);
-
-        if(user.isEmpty()) {
-            return null;
-        }
-
-        return user.get();
-    }
 
     private static void setUserInSession(HttpSession session, User user) {
         session.setAttribute(userSessionKey, user.getId());
@@ -80,7 +69,7 @@ public class UserController {
     @GetMapping("/myDetails")
     public String displayUserPage(HttpServletRequest request, Model model) {
 
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
 
         model.addAttribute("user", currentUser);
 

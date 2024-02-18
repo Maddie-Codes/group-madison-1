@@ -50,12 +50,12 @@ public class SearchController {
 
 
     @PostMapping("/varieties")//_____________________________________________________________search for a variety
-    public String processSearchVarieties(Model model, @RequestParam String varietySearch) {
+    public String processSearchVarieties(Model model, @RequestParam String searchTerm) {
         List<Variety> varieties; //field for varieties
 
-        if (varietySearch != null && !varietySearch.isEmpty()) { //if varietySearch is present
+        if (searchTerm != null && !searchTerm.isEmpty()) { //if searchTerm is present
 
-            List<Variety> varietyList = searchService.searchVarieties(varietySearch); //search for variety, returns a list of varieties that contain the search term(s)
+            List<Variety> varietyList = searchService.searchVarieties(searchTerm); //search for variety, returns a list of varieties that contain the search term(s)
 
             if (varietyList != null) { //if varietyList is present
 
@@ -65,6 +65,8 @@ public class SearchController {
 
                 }else{ //if there are multiple varieties in varietyList, add them to model, and return "search/varieties"
 //                    model = null; //reset model?? nope, bad. Model can't be null
+                    //model.clear(); doesn't work :(
+                    //how to clear the model so that it doesn't keep ahold of the previous request's varieties??
                     model.addAttribute("varieties",varietyList); //add varieties
                     return "/search/varieties";
                 }
@@ -75,6 +77,8 @@ public class SearchController {
         //if varietySearch is null or empty, return to search/varieties
         return "redirect:/search/varieties";
     }
+
+
 
 
 

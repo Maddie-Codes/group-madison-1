@@ -1,15 +1,11 @@
 package com.launchcode.violetSwap.controllers;
 
-import com.launchcode.violetSwap.models.Listing;
-import com.launchcode.violetSwap.models.Maturity;
+import com.launchcode.violetSwap.models.*;
 
-import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.ListingRepository;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
-import com.launchcode.violetSwap.models.Variety;
 
 import com.launchcode.violetSwap.models.data.VarietyRepository;
 
@@ -27,7 +23,6 @@ import java.util.Enumeration;
 import java.util.Optional;
 
 
-
 //connects to user/new-listing and user/new-variety
 @Controller
 @RequestMapping("user")
@@ -39,11 +34,14 @@ public class NewListingVarietyController {
     private UserRepository userRepository;
     @Autowired
     private VarietyRepository varietyRepository;
-
+    @Autowired
+    private UserController userController;
+    @Autowired
+    private UserService userService;
 
     //________________________________________________________________________________________________user/new-listing.html - make a new listing
     @GetMapping("new-listing")
-    public String displayNewListingForm(Model model, HttpServletRequest request) {
+    public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
         model.addAttribute("availableVarieties", varietyRepository.findAll()); //pass in the available AV varieties
         model.addAttribute("maturityLevels", Maturity.values());//pass in enum Maturity
@@ -51,35 +49,25 @@ public class NewListingVarietyController {
     }
 
     @PostMapping("new-listing")
-    public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, Model model, HttpServletRequest request){
+    public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, HttpServletRequest request, Model model){
 
         if (errors.hasErrors()){
             return "redirect:/user/new-listing";
         } else{
 
-            //User currentUser = getUserFromSession(request.getSession()); //use this code!!!
-            //_______get user from session, and check it_____________________
-            HttpSession session = request.getSession(); // get session
-            Integer userId = (Integer) session.getAttribute("user"); //get userId from session
-            System.out.println("____________________________________" + session.getAttribute("user") + "____________________________________");
-            System.out.println("____________________________________" + userId + "____________________________________");
-            //TODO: code breaks here!! VV userId is null now????
-            Optional<User> optionalUser = userRepository.findById(userId); //get optionalUser from id
 
-            if (optionalUser.isEmpty()){ //check if empty
+            User currentUser = userService.getUserFromSession(request.getSession()); //get user from session
+            System.out.println("_________________________________user:" + currentUser + "_____________________________");
 
-                return "user/new-listing";
+            if(currentUser == null){
+                return "redirect:/login";
             }
 
-            User user = optionalUser.get(); //get user from optionalUser
-
-            //_________________________________________________________________
-
-            newListing.setUser(user); //set the user for newListing
+            newListing.setUser(currentUser); //set the user for newListing
 
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "redirect:/user/details";
+        return "redirect:/user/myDetails";
     }
     //________________________________________________________________________________________________
     //________________________________________________________________________________________________ user/new-variety.html - add a new variety
