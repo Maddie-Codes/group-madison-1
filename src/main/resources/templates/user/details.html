@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org/">
-<!--<head>-->
-<!--    <meta charset="UTF-8"/>-->
-<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
-<!--    <title>User Details</title>-->
-<!--</head>-->
-<head th:replace="~{fragments :: head}"></head>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Violet Swap</title>
+</head>
 <body>
 
-<nav th:replace="~{fragments :: page-header}"></nav>
-<div>
-    <!--    //<div th:include="fragments/header :: header"></div>-->
+<h1>User Profile</h1>
 
-
-
-    <div>
-
-        <table>
-            <tr>
-                <td>
-
-                </td>
-                <td>
-                    <div th:if="${user != null}">
-                        <h3 th:text="${user.username}"></h3>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-
-            </tr>
-        </table>
+<th:block  th:if="${displayedUser != null}">
+    <div th:if="${isCurrentUser}">
+        <h2>Hello Current User!</h2>
     </div>
+    <div>
+        <h3 th:text="${displayedUser.username}"></h3>
+        <h4 th:text="${displayedUser.zipcode}"></h4>
+    </div>
+    <div th:if="${!isCurrentUser}">
+        <h4 th:text="'Contact '+${displayedUser.username}"></h4>
+        <form th:action="@{/contact}" method="post">
+            <input type="hidden" th:name="sendingUser" th:value="${currentUser.username}"/>
+            <input type="hidden" th:name="receivingUser" th:value="${displayedUser.username}"/>
+            <label>Subject
+                <input th:field="${emailToSend.subject}" class="form-control"/>
+            </label>
+            <label>Message
+                <textarea th:field="${emailToSend.body}"></textarea>
+            </label>
+
+            <!-- Include CSRF token -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <input type="submit" value="Send Message" class="btn"/>
+        </form>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+    </div>
+</th:block>
+
+<div th:unless="${displayedUser != null}">
+    <h2>This user does not exist!</h2>
 </div>
+
+<div>
+    <form></form>
+</div>
+
+
 </body>
 </html>
