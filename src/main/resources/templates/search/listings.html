@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Listings</title>
-</head>
-<body>
+<header th:replace="~{fragments :: header}"></header>
+<body  style="background-color: #008080">
 <h1>Listings</h1>
-
+<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 <table border="1">
     <thead></thead>
     <tr th:each="listing : ${listings}">
         <td>
         </td>
         <td width="150" height="100">
-            <img th:src="${listing.imagePath != null} ? @{/img/${listing.imagePath}} : @{/img/Defaultimage.png}" alt="Listing Image" />
+            <img th:src="@{${listing.imagePath} != null ? ${listing.imagePath} : '/img/Defaultimage.png'}" width="30%" height="50"/>
+
         </td>
         <td>
             <div>

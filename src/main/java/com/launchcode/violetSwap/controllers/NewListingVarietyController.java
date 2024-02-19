@@ -16,6 +16,10 @@ import com.launchcode.violetSwap.models.data.VarietyRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.StringUtils;
@@ -25,6 +29,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
@@ -77,11 +85,12 @@ public class NewListingVarietyController {
                     // Save the uploaded file to the specified directory
                     byte[] bytes = imageFile.getBytes();
                     String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
-                    String filePath = uploadDirectory + File.separator + fileName;
+                    String filePath = uploadDirectory + fileName;
                     Files.write(Paths.get(filePath), bytes);
 
                     // Set the image path in the Listing object
-                    newListing.setImagePath(filePath);
+//                    //newListing.setImagePath(filePath);
+                    newListing.setImagePath("/img/" + imageFile.getOriginalFilename());
                 } catch (IOException e) {
                     e.printStackTrace();
                     // Handle error while processing the uploaded file
@@ -118,18 +127,17 @@ public class NewListingVarietyController {
     }
     //________________________________________________________________________________________________
 
-    //to show the listing
+
     @GetMapping("/listings")
     public String displayListings(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
         Integer userId = (Integer) session.getAttribute("user");
         List<Listing> listings = listingRepository.findAll();
-        model.addAttribute("userId",userId);
+        model.addAttribute("userId", userId);
         model.addAttribute("maturityLevels", Maturity.values());
         model.addAttribute("listings", listings);
         return "search/listings";
     }
-
 
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable Integer id, Model model, HttpServletRequest request) {
@@ -161,7 +169,6 @@ public class NewListingVarietyController {
             existingListing.setMaturity(updateListing.getMaturity());
             existingListing.setDescription(updateListing.getDescription());
             listingRepository.save(existingListing);
-
         }
         List<Listing> listings = listingRepository.findAll();
         model.addAttribute("userId",userId);
@@ -169,7 +176,6 @@ public class NewListingVarietyController {
         model.addAttribute("listings", listings);
         return "search/listings";
     }
-
 
 }
 
