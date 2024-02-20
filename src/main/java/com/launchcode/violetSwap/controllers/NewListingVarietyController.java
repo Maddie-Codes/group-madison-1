@@ -93,7 +93,7 @@ public class NewListingVarietyController {
             newListing.setUser(user);
             listingRepository.save(newListing);
         }
-        return "user/details";
+        return "redirect:/user/myDetails";
     }
 
     //________________________________________________________________________________________________
