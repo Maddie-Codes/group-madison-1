@@ -51,7 +51,7 @@ public class SearchController {
 
 
 
-    @PostMapping("/varieties/results")//_____________________________________________________________search for a variety
+    @PostMapping("/varieties")//_____________________________________________________________search for a variety
     public String processSearchVarieties(Model model, @RequestParam String searchTerm) {
 
         if (searchTerm != null && !searchTerm.isEmpty()) { //if searchTerm is present

@@ -3,7 +3,21 @@
 
 <header th:replace="~{fragments :: header}"></header>
 <body  style="background-color: #008080">
+
+<h2>Varieties</h2>
+<form th:action="@{/search/varieties}" method="post" style="max-width:600px;">
+    <div class="form-group">
+        <label>Search for Variety :
+            <input class="form-control" type="text" name="searchTerm" />
+        </label>
+        <!-- Include CSRF token -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button type="submit">Search</button>
+    </div>
+</form>
+
 <div>
+
     <ul>
         <li th:each="variety : ${varieties}">
 
