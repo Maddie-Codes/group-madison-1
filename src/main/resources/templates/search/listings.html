@@ -32,6 +32,7 @@
         <td width="50">
             <span th:if="${listing.user != null && listing.user.id != null}">
     <a th:href="@{/user/update/{id}(id=${listing.id})}">Update</a>
+     <a th:href="@{/user/delete-listing/{id}(id=${listing.id})}">Delete</a>
 </span>
             <span th:unless="${listing.user != null && listing.user.id != null}">
     <span>Update</span>

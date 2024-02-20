@@ -48,7 +48,7 @@ public class NewListingVarietyController {
     private String uploadDirectory;
 
 
-    //________________________________________________________________________________________________user/new-listing.html - make a new listing
+    //________________________________________________________________________________________________ make a new listing
     @GetMapping("new-listing")
     public String displayNewListingForm(Model model, HttpServletRequest request) {
         model.addAttribute(new Listing());
@@ -97,7 +97,7 @@ public class NewListingVarietyController {
     }
 
     //________________________________________________________________________________________________
-    //-------user/new-variety.html - add a new variety------------------------------------------------
+    //------------------------------------------------------------------------------------------------make a new variety
 
     @GetMapping("new-variety")
     public String displayNewVarietyForm (Model model){
@@ -117,8 +117,8 @@ public class NewListingVarietyController {
         return "redirect:/user/new-listing";
     }
     //________________________________________________________________________________________________
+//____________________________________________________________________________________________________show listings
 
-    //to show the listing
     @GetMapping("/listings")
     public String displayListings(Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
@@ -130,7 +130,7 @@ public class NewListingVarietyController {
         return "search/listings";
     }
 
-
+    //_______________________________________________________________________________________________update listings
     @GetMapping("/update/{id}")
     public String showUpdateForm(@PathVariable Integer id, Model model, HttpServletRequest request) {
         if (id == null) {
@@ -169,6 +169,24 @@ public class NewListingVarietyController {
         model.addAttribute("listings", listings);
         return "search/listings";
     }
+
+//____________________________________________________________________________________________________delete listings
+    @GetMapping("/delete-listing/{id}")
+    public String deleteListing(@PathVariable Integer id, Model model){
+        model.addAttribute("id", id);
+        return "search/deleteListing";
+    }
+
+    @PostMapping("/delete-listing/{id}")
+    public String handleDeleteListing(@PathVariable Integer id, HttpServletRequest request){
+
+        listingRepository.deleteById(id);
+
+        return "redirect:/user/listings";
+    }
+//_______________________________________________________________________________________________________
+
+
 
 
 }
