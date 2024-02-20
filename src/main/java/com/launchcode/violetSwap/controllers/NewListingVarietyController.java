@@ -180,7 +180,17 @@ public class NewListingVarietyController {
     @PostMapping("/delete-listing/{id}")
     public String handleDeleteListing(@PathVariable Integer id, HttpServletRequest request){
 
-        listingRepository.deleteById(id);
+        if(id==null){return"redirect:/user/listings";} //check id
+
+        Listing listingToDelete = listingRepository.findById(id).orElse(null);;//get listing or null from id
+
+        HttpSession session = request.getSession();//get session
+        Integer userId = (Integer) session.getAttribute("user");//get user id from session
+
+        if(listingToDelete != null && userId.equals(listingToDelete.getUser().getId())){ //if the listing exists and the session user id matches the listing user_id
+            listingRepository.deleteById(id);//delete the listing
+            return "redirect:/user/listings";
+        }
 
         return "redirect:/user/listings";
     }
