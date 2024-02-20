@@ -8,10 +8,13 @@
 
 <h1>User Profile</h1>
 <div  th:if="${user != null}">
-<h3 th:text="${user.username}"></h3>
+    <h3 th:text="${user.username}"></h3>
+
+        <!-- <h4 th:text="${user.zipcode}"></h4>-->
+<!--    button to delete user-->
+    <a th:href="@{/user/delete/{id}(id=${user.id})}">
+        <button th:type="button"></button>
+    </a>
 </div>
-    <!-- <h4 th:text="${user.zipcode}"></h4>-->
-
-
 </body>
 </html>

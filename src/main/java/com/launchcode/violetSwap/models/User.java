@@ -31,7 +31,7 @@ public class User extends AbstractEntity {
     private String zipcode;
 
     @OneToMany (mappedBy = "user")
-    private final List<Listing> Listings = new ArrayList<>();
+    private final List<Listing> listings = new ArrayList<>();
 
 
     public User() {}
@@ -91,7 +91,8 @@ public class User extends AbstractEntity {
         this.zipcode = zipcode;
     }
 
-//    public List<Listing> getUserListings() {
-//        return userListings;
-//    }
+    public List<Listing> getListings() {
+        return listings;
+    }
+
 }

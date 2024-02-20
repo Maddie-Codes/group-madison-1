@@ -1,5 +1,6 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.Listing;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
@@ -16,6 +17,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -125,5 +127,45 @@ public class UserController {
         userRepository.save(currentUser);
 
         return "redirect:/user/myDetails";
+    }
+
+//______________________________________________________________________________________________delete user
+    @GetMapping("/delete/{id}")
+    public String showDeletePage(@PathVariable Integer id, Model model){
+        model.addAttribute("id", id);
+        return "user/deleteUser";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String processDeletePage(@PathVariable Integer id, HttpServletRequest request){
+
+        if(id==null){return"redirect:/user/myDetails";} //check id for null
+
+        User userAccount = userRepository.findById(id).orElse(null); //get account user
+
+        HttpSession session = request.getSession();//get session
+        Integer userId = (Integer) session.getAttribute("user");//get user id from session
+
+        if(userAccount!=null && userAccount.getId()==userId){ //if userAccount id and user id match,
+            List<Listing> accountListings = userAccount.getListings();
+            for(Listing listing: accountListings){
+
+                //code to delete listings, then make code to delete user
+
+            }
+
+
+
+
+
+        }
+
+
+
+
+
+
+
+        return "redirect:/login";
     }
 }

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/user/delete/{id}(id=${id})}" method="post">
+    <a>Are you sure you want to delete your account? All information and listings will be deleted and cannot be undone.</a>
+
+    <a th:href="@{/user/myDetails}">
+        <button th:type="button"> No </button>
+    </a>
+
+    <a>
+        <!-- Include CSRF token -->
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+        <button th:type="submit"> Yes </button>
+    </a>
+</form>
+
+</body>
+</html>
