@@ -2,6 +2,8 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.SearchService;
 import com.launchcode.violetSwap.models.Variety;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,9 +51,8 @@ public class SearchController {
 
 
 
-    @PostMapping("/varieties")//_____________________________________________________________search for a variety
+    @PostMapping("/varieties/results")//_____________________________________________________________search for a variety
     public String processSearchVarieties(Model model, @RequestParam String searchTerm) {
-        List<Variety> varieties; //field for varieties
 
         if (searchTerm != null && !searchTerm.isEmpty()) { //if searchTerm is present
 
@@ -67,6 +68,10 @@ public class SearchController {
 //                    model = null; //reset model?? nope, bad. Model can't be null
                     //model.clear(); doesn't work :(
                     //how to clear the model so that it doesn't keep ahold of the previous request's varieties??
+
+                    //HttpSession session = request.getSession();
+                    //session.removeAttribute("varieties");
+
                     model.addAttribute("varieties",varietyList); //add varieties
                     return "/search/varieties";
                 }

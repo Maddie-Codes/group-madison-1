@@ -5,7 +5,7 @@
 <body>
 
 <h2>Varieties</h2>
-<form method="post" style="max-width:600px;">
+<form th:action="@{/search/varieties/results}" method="post" style="max-width:600px;">
     <div class="form-group">
         <label>Search for Variety :
             <input class="form-control" type="text" name="searchTerm" />
