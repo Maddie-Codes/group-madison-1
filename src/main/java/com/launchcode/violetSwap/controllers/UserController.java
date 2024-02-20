@@ -48,7 +48,7 @@ public class UserController {
 
     @GetMapping("/update")
     public String displayUpdateUserDetailsForm(HttpServletRequest request, Model model) {
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
         model.addAttribute(new UpdateFormDTO());
         model.addAttribute("title", "Please Update Your User Profile");
         model.addAttribute("subtitle", "We need a little more information in your profile for the features of this site.");
@@ -60,7 +60,7 @@ public class UserController {
     @PostMapping("/update")
     public String processUpdateUserDetailsForm(@ModelAttribute @Valid UpdateFormDTO updateFormDTO, Errors errors,
                                                HttpServletRequest request, Model model) {
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
 
         if(errors.hasErrors()) {
             model.addAttribute("title", "Please Update Your User Profile");
@@ -81,7 +81,7 @@ public class UserController {
     @GetMapping("/{username}")
     public String displayUserDetails(@PathVariable String username, HttpServletRequest request, Model model) {
         User userToDisplay = userRepository.findByUsername(username);
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
         Boolean isCurrentUser = userToDisplay.equals(currentUser);
 
         if (userToDisplay == null) {
