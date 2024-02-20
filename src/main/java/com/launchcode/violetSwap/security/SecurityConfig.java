@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableWebSecurity
 public class SecurityConfig {
 
     @Autowired
@@ -39,6 +38,7 @@ public class SecurityConfig {
         //Allows any user (unauthenticated) to POST to the "/register" endpoint
         //Requires a user to be authenticated to access any other page
         http.authorizeHttpRequests( auth -> {
+                    auth.requestMatchers("/img/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/", "/register", "/error").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     auth.anyRequest().authenticated();
