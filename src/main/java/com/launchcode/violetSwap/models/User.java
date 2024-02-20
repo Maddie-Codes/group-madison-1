@@ -28,7 +28,7 @@ public class User extends AbstractEntity {
 
     private String email;
 
-    private String zipcode;
+    private Integer zipcode;
 
     @OneToMany (mappedBy = "user")
     private final List<Listing> Listings = new ArrayList<>();
@@ -48,7 +48,7 @@ public class User extends AbstractEntity {
         this.loginType = loginType.getType();
         this.pwHash = encoder.encode(password);
         this.email = email;
-        this.zipcode = zipcode;
+        this.zipcode = Integer.valueOf(zipcode);
     }
 
     public boolean isMatchingPassword(String password) {
@@ -83,12 +83,16 @@ public class User extends AbstractEntity {
         this.email = email;
     }
 
-    public String getZipcode() {
+    public Integer getZipcode() {
         return zipcode;
     }
 
     public void setZipcode(String zipcode) {
-        this.zipcode = zipcode;
+        this.zipcode = Integer.valueOf(zipcode);
+    }
+
+    public List<Listing> getListings(){
+        return Listings;
     }
 
 //    public List<Listing> getUserListings() {

@@ -3,6 +3,7 @@ package com.launchcode.violetSwap.controllers;
 import com.launchcode.violetSwap.models.Email;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
+import com.launchcode.violetSwap.models.UserService;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.dto.UpdateFormDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,28 +25,16 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     private static final String userSessionKey = "user";
 
-    public User getUserFromSession(HttpSession session) {
-        Integer userId = (Integer) session.getAttribute(userSessionKey);
-        if (userId == null) {
-            return null;
-        }
-
-        Optional<User> user = userRepository.findById(userId);
-
-        if(user.isEmpty()) {
-            return null;
-        }
-
-        return user.get();
-    }
 
     @GetMapping("/myDetails")
     public String displayUserPage(HttpServletRequest request, Model model) {
 
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
 
         if (!currentUser.hasRequiredDetails()) {
             return "redirect:/user/update";
@@ -59,7 +48,7 @@ public class UserController {
 
     @GetMapping("/update")
     public String displayUpdateUserDetailsForm(HttpServletRequest request, Model model) {
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
         model.addAttribute(new UpdateFormDTO());
         model.addAttribute("title", "Please Update Your User Profile");
         model.addAttribute("subtitle", "We need a little more information in your profile for the features of this site.");
@@ -71,7 +60,7 @@ public class UserController {
     @PostMapping("/update")
     public String processUpdateUserDetailsForm(@ModelAttribute @Valid UpdateFormDTO updateFormDTO, Errors errors,
                                                HttpServletRequest request, Model model) {
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
 
         if(errors.hasErrors()) {
             model.addAttribute("title", "Please Update Your User Profile");
@@ -92,7 +81,7 @@ public class UserController {
     @GetMapping("/{username}")
     public String displayUserDetails(@PathVariable String username, HttpServletRequest request, Model model) {
         User userToDisplay = userRepository.findByUsername(username);
-        User currentUser = getUserFromSession(request.getSession());
+        User currentUser = userService.getUserFromSession(request.getSession());
         Boolean isCurrentUser = userToDisplay.equals(currentUser);
 
         if (userToDisplay == null) {

@@ -1,15 +1,11 @@
 package com.launchcode.violetSwap.controllers;
 
-import com.launchcode.violetSwap.models.Listing;
-import com.launchcode.violetSwap.models.Maturity;
+import com.launchcode.violetSwap.models.*;
 
-import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.ListingRepository;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-
-import com.launchcode.violetSwap.models.Variety;
 
 import com.launchcode.violetSwap.models.data.VarietyRepository;
 
@@ -40,7 +36,6 @@ import java.util.List;
 import java.util.Optional;
 
 
-
 //connects to user/new-listing and user/new-variety
 @Controller
 @RequestMapping("user")
@@ -52,13 +47,19 @@ public class NewListingVarietyController {
     private UserRepository userRepository;
     @Autowired
     private VarietyRepository varietyRepository;
+  
+    @Autowired
+    private UserController userController;
+    @Autowired
+    private UserService userService;
+
     @Value("${file.upload.directory}")
     private String uploadDirectory;
 
 
-    //________________________________________________________________________________________________ make a new listing
+    //________________________________________________________________________________________________user/new-listing.html - make a new listing
     @GetMapping("new-listing")
-    public String displayNewListingForm(Model model, HttpServletRequest request) {
+    public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
         model.addAttribute("availableVarieties", varietyRepository.findAll()); //pass in the available AV varieties
         model.addAttribute("maturityLevels", Maturity.values());//pass in enum Maturity
@@ -70,16 +71,13 @@ public class NewListingVarietyController {
                                         @RequestParam("image") MultipartFile imageFile,
                                         Errors errors, Model model, HttpServletRequest request) {
         if (errors.hasErrors()) {
-            return "user/new-listing";
+            return "redirect:/user/new-listing";
         } else {
-            HttpSession session = request.getSession();
-            Integer userId = (Integer) session.getAttribute("user");
-            Optional<User> optionalUser = userRepository.findById(userId);
-            if (optionalUser.isEmpty() || userId == null) {
-                return "user/new-listing";
+            User user = userService.getUserFromSession(request.getSession()); //get user from session
+            if(user == null){
+                return "redirect:/login";
             }
-            User user = optionalUser.get();
-
+          
             if (!imageFile.isEmpty()) {
                 try {
                     // Save the uploaded file to the specified directory
@@ -99,8 +97,8 @@ public class NewListingVarietyController {
                 }
             }
 
-            newListing.setUser(user);
-            listingRepository.save(newListing);
+            newListing.setUser(user);//set the user for newListing
+            listingRepository.save(newListing);//if no errors, save listing to repository
         }
         return "user/home";
     }
