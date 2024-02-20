@@ -1,9 +1,9 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.Email;
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
-import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
 import com.launchcode.violetSwap.models.dto.UpdateFormDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -42,45 +42,6 @@ public class UserController {
         return user.get();
     }
 
-    private static void setUserInSession(HttpSession session, User user) {
-        session.setAttribute(userSessionKey, user.getId());
-    }
-
-    @GetMapping
-    public String setUser(HttpServletRequest request) {
-
-        Principal principal = request.getUserPrincipal();
-        String authUsername;
-        LoginType loginType = null;
-
-        if (principal instanceof OAuth2AuthenticationToken) {
-            // github
-            authUsername = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("login");
-            loginType = LoginType.OAUTH_GITHUB;
-
-            if (authUsername == null) {
-                // gmail
-                String tokenEmail = ((OAuth2AuthenticationToken) principal).getPrincipal().getAttribute("email");
-                authUsername = tokenEmail.split("@")[0];
-                loginType = LoginType.OAUTH_GOOGLE;
-            }
-        } else {
-            authUsername = principal.getName();
-        }
-
-        User currentUser = userRepository.findByUsername(authUsername);
-
-        if (currentUser == null) {
-            User newUser = new User(authUsername, loginType);
-            userRepository.save(newUser);
-            currentUser = newUser;
-        }
-
-        setUserInSession(request.getSession(), currentUser);
-
-        return "redirect:/user/myDetails";
-    }
-
     @GetMapping("/myDetails")
     public String displayUserPage(HttpServletRequest request, Model model) {
 
@@ -90,7 +51,8 @@ public class UserController {
             return "redirect:/user/update";
         }
 
-        model.addAttribute("user", currentUser);
+        model.addAttribute("isCurrentUser", true);
+        model.addAttribute("displayedUser", currentUser);
 
         return "user/details";
     }
@@ -126,4 +88,23 @@ public class UserController {
 
         return "redirect:/user/myDetails";
     }
+
+    @GetMapping("/{username}")
+    public String displayUserDetails(@PathVariable String username, HttpServletRequest request, Model model) {
+        User userToDisplay = userRepository.findByUsername(username);
+        User currentUser = getUserFromSession(request.getSession());
+        Boolean isCurrentUser = userToDisplay.equals(currentUser);
+
+        if (userToDisplay == null) {
+            return "user/details";
+        }
+
+        model.addAttribute("isCurrentUser", isCurrentUser);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("displayedUser", userToDisplay);
+        model.addAttribute("emailToSend", new Email());
+
+        return "user/details";
+    }
+
 }
