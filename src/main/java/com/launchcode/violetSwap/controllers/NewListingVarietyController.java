@@ -102,7 +102,7 @@ public class NewListingVarietyController {
             newListing.setUser(user);
             listingRepository.save(newListing);
         }
-        return "user/details";
+        return "user/home";
     }
 
     //________________________________________________________________________________________________
