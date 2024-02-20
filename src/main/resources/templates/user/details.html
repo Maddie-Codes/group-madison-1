@@ -7,8 +7,43 @@
 <body>
 
 <h1>User Profile</h1>
-<h3 th:text="${user.username}"></h3>
-<!-- <h4 th:text="${user.zipcode}"></h4>-->
+
+<th:block  th:if="${displayedUser != null}">
+    <div th:if="${isCurrentUser}">
+        <h2>Hello Current User!</h2>
+    </div>
+    <div>
+        <h3 th:text="${displayedUser.username}"></h3>
+        <h4 th:text="${displayedUser.zipcode}"></h4>
+    </div>
+    <div th:if="${!isCurrentUser}">
+        <h4 th:text="'Contact '+${displayedUser.username}"></h4>
+        <form th:action="@{/contact}" method="post">
+            <input type="hidden" th:name="sendingUser" th:value="${currentUser.username}"/>
+            <input type="hidden" th:name="receivingUser" th:value="${displayedUser.username}"/>
+            <label>Subject
+                <input th:field="${emailToSend.subject}" class="form-control"/>
+            </label>
+            <label>Message
+                <textarea th:field="${emailToSend.body}"></textarea>
+            </label>
+
+            <!-- Include CSRF token -->
+            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+            <input type="submit" value="Send Message" class="btn"/>
+        </form>
+        <div th:if="${message}" th:text="${message}" th:class="${'alert ' + alertClass}"></div>
+    </div>
+</th:block>
+
+<div th:unless="${displayedUser != null}">
+    <h2>This user does not exist!</h2>
+</div>
+
+<div>
+    <form></form>
+</div>
 
 
 </body>

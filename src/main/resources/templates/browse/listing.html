@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listings</title>
+</head>
+<body>
+<h1>Listings</h1>
+<table border="1">
+    <thead></thead>
+    <tr th:each="listing : ${listings}">
+        <td th:text="${listing.id}"></td>
+        <td width="150" height="100">
+            <img th:src="${listing.variety.imgPath != null and listing.variety.imgPath != ''} ? ${listing.variety.imgPath} : '/img/DefaultImage.png'" alt="Default Image" />
+        </td>
+        <td>
+            <div>
+                <label th:for="variety">Violet Variety:</label>
+                <label th:text="${listing.variety.name}"></label>
+            </div>
+            <div>
+                <label th:for="maturity">Violet Maturity:</label>
+                <label th:text="${listing.maturity}"></label>
+            </div>
+            <div>
+                <label th:for="maturity">Details:</label>
+                <label th:text="${listing.description}"></label>
+            </div>
+        </td>
+
+<!--        <td th:text="${listing.variety.name}"></td>-->
+<!--        <td th:text="${listing.maturity}"></td>-->
+<!--        <td th:text="${listing.description}"></td>-->
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

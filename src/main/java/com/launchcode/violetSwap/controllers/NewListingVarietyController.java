@@ -11,15 +11,28 @@ import com.launchcode.violetSwap.models.data.VarietyRepository;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -34,10 +47,16 @@ public class NewListingVarietyController {
     private UserRepository userRepository;
     @Autowired
     private VarietyRepository varietyRepository;
+  
     @Autowired
     private UserController userController;
     @Autowired
     private UserService userService;
+
+    @Value("${file.upload.directory}")
+    private String uploadDirectory;
+
+
 
     //________________________________________________________________________________________________user/new-listing.html - make a new listing
     @GetMapping("new-listing")
@@ -49,29 +68,44 @@ public class NewListingVarietyController {
     }
 
     @PostMapping("new-listing")
-    public String processNewListingForm(@ModelAttribute @Valid Listing newListing, Errors errors, HttpServletRequest request, Model model){
-
-        if (errors.hasErrors()){
+    public String processNewListingForm(@ModelAttribute @Valid Listing newListing,
+                                        @RequestParam("image") MultipartFile imageFile,
+                                        Errors errors, Model model, HttpServletRequest request) {
+        if (errors.hasErrors()) {
             return "redirect:/user/new-listing";
-        } else{
-
-
-            User currentUser = userService.getUserFromSession(request.getSession()); //get user from session
-            System.out.println("_________________________________user:" + currentUser + "_____________________________");
-
-            if(currentUser == null){
+        } else {
+            User user = userService.getUserFromSession(request.getSession()); //get user from session
+            if(user == null){
                 return "redirect:/login";
             }
+          
+            if (!imageFile.isEmpty()) {
+                try {
+                    // Save the uploaded file to the specified directory
+                    byte[] bytes = imageFile.getBytes();
+                    String fileName = StringUtils.cleanPath(imageFile.getOriginalFilename());
+                    String filePath = uploadDirectory + fileName;
+                    Files.write(Paths.get(filePath), bytes);
 
-            newListing.setUser(currentUser); //set the user for newListing
+                    // Set the image path in the Listing object
+//                    //newListing.setImagePath(filePath);
+                    newListing.setImagePath("/img/" + imageFile.getOriginalFilename());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    // Handle error while processing the uploaded file
+                    // You may want to return an error message to the user or handle it appropriately
+                    return "user/new-listing";
+                }
+            }
 
+            newListing.setUser(user);//set the user for newListing
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "redirect:/user/myDetails";
+        return "user/home";
     }
-    //________________________________________________________________________________________________
-    //________________________________________________________________________________________________ user/new-variety.html - add a new variety
 
+    //________________________________________________________________________________________________
+    //-------user/new-variety.html - add a new variety------------------------------------------------
 
     @GetMapping("new-variety")
     public String displayNewVarietyForm (Model model){
@@ -91,5 +125,56 @@ public class NewListingVarietyController {
         return "redirect:/user/new-listing";
     }
     //________________________________________________________________________________________________
+
+
+    @GetMapping("/listings")
+    public String displayListings(Model model, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        List<Listing> listings = listingRepository.findAll();
+        model.addAttribute("userId", userId);
+        model.addAttribute("maturityLevels", Maturity.values());
+        model.addAttribute("listings", listings);
+        return "search/listings";
+    }
+
+    @GetMapping("/update/{id}")
+    public String showUpdateForm(@PathVariable Integer id, Model model, HttpServletRequest request) {
+        if (id == null) {
+            return "redirect:/error";
+        }
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        Listing listing = listingRepository.findById(id).orElse(null);
+        if (listing != null && userId != null && userId.equals(listing.getUser().getId())) {
+            model.addAttribute("listing", listing);
+            model.addAttribute("maturityLevels", Maturity.values());
+            return "/search/updateListing";
+        } else {
+            return "redirect:/listings";
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateListing(@PathVariable Integer id, @ModelAttribute @Valid Listing updateListing, Model model, HttpServletRequest request) {
+        if (id == null) {
+            // Handle null id scenario, e.g., redirect to a different page or display an error message
+            return "redirect:/error";
+        }
+        HttpSession session = request.getSession();
+        Integer userId = (Integer) session.getAttribute("user");
+        Listing existingListing = listingRepository.findById(id).orElse(null);
+        if (existingListing != null && userId != null && userId.equals(existingListing.getUser().getId())) {
+            existingListing.setMaturity(updateListing.getMaturity());
+            existingListing.setDescription(updateListing.getDescription());
+            listingRepository.save(existingListing);
+        }
+        List<Listing> listings = listingRepository.findAll();
+        model.addAttribute("userId",userId);
+        model.addAttribute("maturityLevels", Maturity.values());
+        model.addAttribute("listings", listings);
+        return "search/listings";
+    }
+
 }
 

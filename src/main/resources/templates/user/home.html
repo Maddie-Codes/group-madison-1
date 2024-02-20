@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org/">
+<!--<head>-->
+<!--    <meta charset="UTF-8"/>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>-->
+<!--    <title>User Details</title>-->
+<!--</head>-->
+<header th:replace="~{fragments :: header}"></header>
+<body  style="background-color: #008080">
+
+<!--<nav th:replace="~{fragments :: page-header}"></nav>-->
+<div>
+    <div>
+
+        <table>
+            <tr>
+                <td>
+                    <div th:if="${user != null}">
+                        <h3 th:text="'Welcome, ' + ${user.username}" align="left"></h3>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div align="center">
+                        <img th:src="@{/img/headerimg.jpg}" height="5%" width="50%"/>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

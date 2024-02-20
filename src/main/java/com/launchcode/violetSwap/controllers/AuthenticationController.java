@@ -1,10 +1,12 @@
 package com.launchcode.violetSwap.controllers;
 
+import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.dto.LoginFormDTO;
 import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
 import com.launchcode.violetSwap.security.CustomAuthenticationProvider;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -63,7 +65,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public String processCreateNewUserForm(@ModelAttribute @Valid RegisterFormDTO registerFormDTO,
-                                           Errors errors, HttpServletRequest request, Model model) {
+                                           Errors errors, HttpServletRequest request, Model model) throws ServletException {
 
         if(errors.hasErrors()) {
             model.addAttribute("title", "Register with Violet Swap");
@@ -89,10 +91,11 @@ public class AuthenticationController {
 
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getLoginType(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getZipcode());
         userRepository.save(newUser);
+
+        request.login(registerFormDTO.getUsername(), registerFormDTO.getPassword());
         setUserInSession(request.getSession(), newUser);
 
-        return "/home";
-
+        return "redirect:/user/myDetails";
 
     }
 
