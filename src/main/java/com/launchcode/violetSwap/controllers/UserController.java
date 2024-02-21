@@ -1,9 +1,17 @@
 package com.launchcode.violetSwap.controllers;
 
+
+import com.launchcode.violetSwap.models.Listing;
+
 import com.launchcode.violetSwap.models.Email;
+
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
+
+import com.launchcode.violetSwap.models.data.ListingRepository;
+
 import com.launchcode.violetSwap.models.UserService;
+
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.dto.UpdateFormDTO;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +25,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -26,7 +35,10 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
+    private ListingRepository listingRepository;
+    @Autowired
     private UserService userService;
+
 
     private static final String userSessionKey = "user";
 
@@ -40,6 +52,7 @@ public class UserController {
             return "redirect:/user/update";
         }
 
+        model.addAttribute("listings", currentUser.getListings());
         model.addAttribute("isCurrentUser", true);
         model.addAttribute("displayedUser", currentUser);
 
@@ -78,6 +91,38 @@ public class UserController {
         return "redirect:/user/myDetails";
     }
 
+
+//______________________________________________________________________________________________delete user
+    @GetMapping("/delete/{id}")
+    public String showDeletePage(@PathVariable Integer id, Model model){
+        model.addAttribute("id", id);
+        return "user/deleteUser";
+    }
+
+    @PostMapping("/delete/{id}")
+    public String processDeletePage(@PathVariable Integer id, HttpServletRequest request){
+
+        if(id==null){return"redirect:/user/myDetails";} //check id for null
+
+        User userAccount = userRepository.findById(id).orElse(null); //get userAccount to delete
+        if(userAccount==null){return"redirect:/user/myDetails";} //check account for null
+
+        HttpSession session = request.getSession();//get session
+        Integer userId = (Integer) session.getAttribute("user");//get user id from session
+
+        if(userAccount.getId()==userId){ //if userAccount id and user id match,
+
+            List<Listing> accountListings = userAccount.getListings(); //delete all listings in the account,
+            for(Listing listing: accountListings){
+                listingRepository.deleteById(listing.getId());
+            }
+
+            userRepository.deleteById(userId);//and delete the account
+        }
+
+        return "redirect:/login";
+    }
+
     @GetMapping("/{username}")
     public String displayUserDetails(@PathVariable String username, HttpServletRequest request, Model model) {
         User userToDisplay = userRepository.findByUsername(username);
@@ -95,5 +140,6 @@ public class UserController {
 
         return "user/details";
     }
+
 
 }

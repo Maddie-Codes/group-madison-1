@@ -4,9 +4,11 @@
     <meta charset="UTF-8"/>
     <title>Violet Swap</title>
 </head>
-<body>
+<header th:replace="~{fragments :: header}"></header>
+<body  style="background-color: #008080">
 
 <h1>User Profile</h1>
+
 
 <th:block  th:if="${displayedUser != null}">
     <div th:if="${isCurrentUser}">
@@ -41,10 +43,20 @@
     <h2>This user does not exist!</h2>
 </div>
 
-<div>
-    <form></form>
-</div>
+<h1>Listings</h1>
+<!-- new-listing button -->
+<a th:href="@{/user/new-listing}">
+    <button type="button">Add Listing</button>
+</a>
+<!-- user's listings -->
+<div th:replace="fragments :: showListings"></div>
 
+<!--    button to delete user-->
+<div th:if="${isCurrentUser}">
+    <a th:href="@{/user/delete/{id}(id=${displayedUser.id})}">
+        <button th:type="button">Delete Account</button>
+    </a>
+</div>
 
 </body>
 </html>

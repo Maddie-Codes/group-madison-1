@@ -57,7 +57,7 @@ public class NewListingVarietyController {
     private String uploadDirectory;
 
 
-    //________________________________________________________________________________________________user/new-listing.html - make a new listing
+    //________________________________________________________________________________________________ make a new listing
     @GetMapping("new-listing")
     public String displayNewListingForm(Model model) {
         model.addAttribute(new Listing());
@@ -100,7 +100,9 @@ public class NewListingVarietyController {
             newListing.setUser(user);//set the user for newListing
             listingRepository.save(newListing);//if no errors, save listing to repository
         }
-        return "user/home";
+
+        return "redirect:/user/myDetails";
+
     }
 
     //________________________________________________________________________________________________

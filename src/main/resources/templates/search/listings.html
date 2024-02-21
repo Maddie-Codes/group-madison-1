@@ -2,42 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <header th:replace="~{fragments :: header}"></header>
 <body  style="background-color: #008080">
-<h1>Listings</h1>
-<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
-<table border="1">
-    <thead></thead>
-    <tr th:each="listing : ${listings}">
-        <td>
-        </td>
-        <td width="150" height="100">
-            <img th:src="@{${listing.imagePath} != null ? ${listing.imagePath} : '/img/Defaultimage.png'}" width="30%" height="50"/>
 
-        </td>
-        <td>
-            <div>
-                <label th:for="variety">Violet Variety:</label>
-                <span th:if="${listing.variety != null}" th:text="${listing.variety.name}"></span>
-            </div>
-            <div>
-                <label th:for="maturity">Violet Maturity:</label>
-                <label th:text="${listing.maturity.type}"></label>
-            </div>
-            <div>
-                <label th:for="maturity">Details:</label>
-                <label th:text="${listing.description}"></label>
-            </div>
-        </td>
-        <td width="50">
-            <span th:if="${listing.user != null && listing.user.id != null}">
-    <a th:href="@{/user/update/{id}(id=${listing.id})}">Update</a>
-     <a th:href="@{/user/delete-listing/{id}(id=${listing.id})}">Delete</a>
-</span>
-            <span th:unless="${listing.user != null && listing.user.id != null}">
-    <span>Update</span>
-</span>
-        </td>
-    </tr>
-    </tbody>
-</table>
+<h1>Listings</h1>
+<div th:replace="fragments :: showListings"></div>
+
 </body>
 </html>
