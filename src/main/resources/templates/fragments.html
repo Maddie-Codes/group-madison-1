@@ -30,11 +30,58 @@
         </table>
         <th:block>
             <a class="navlink" th:href="@{/user/home.html}">Home</a>
+            <a class="navlink" th:href="@{/user/myDetails}">Account</a>
             <a class="navlink" th:href="@{/user/new-listing}">Add Listing</a>
-            <a class="navlink" th:href="@{/user/listings}">View Listing</a>
-            <a class="navlink" th:href="@{/search/varieties}">Browse Variety</a>
+            <a class="navlink" th:href="@{/user/listings}">View All Listings</a>
+            <a class="navlink" th:href="@{/search/varieties}">Browse Varieties</a>
         </th:block>
     </div>
 </header>
+
+<!-- showListings (pass in listings to show) -->
+<div th:fragment="showListings">
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+    <table border="1" style="background-color: #DCDCDC">
+        <thead></thead>
+        <tr th:each="listing : ${listings}">
+            <td>
+            </td>
+            <td width="150" height="100">
+                <img th:src="@{${listing.imagePath} != null ? ${listing.imagePath} : '/img/Defaultimage.png'}" width="30%" height="50"/>
+
+            </td>
+            <td>
+                <div>
+                    <label th:for="variety">Violet Variety:</label>
+                    <span th:if="${listing.variety != null}" th:text="${listing.variety.name}"></span>
+                </div>
+                <div>
+                    <label th:for="maturity">Violet Maturity:</label>
+                    <label th:text="${listing.maturity.type}"></label>
+                </div>
+                <div>
+                    <label th:for="maturity">Details:</label>
+                    <label th:text="${listing.description}"></label>
+                </div>
+            </td>
+            <td width="50">
+            <span th:if="${listing.user != null && listing.user.id != null}">
+                <a th:href="@{/user/update/{id}(id=${listing.id})}">
+                    <button type="button">Update</button>
+                </a>
+                <a th:href="@{/user/delete-listing/{id}(id=${listing.id})}">
+                    <button type="button">Delete </button>
+                </a>
+            </span>
+                <span th:unless="${listing.user != null && listing.user.id != null}">
+                <span>Update</span>
+            </span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<!-- _______________________________________________ -->
+
 </body>
 </html>

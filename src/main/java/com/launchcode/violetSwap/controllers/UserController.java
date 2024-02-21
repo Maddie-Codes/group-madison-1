@@ -59,6 +59,7 @@ public class UserController {
             return "redirect:/user/update";
         }
 
+        model.addAttribute("listings", currentUser.getListings());
         model.addAttribute("isCurrentUser", true);
         model.addAttribute("displayedUser", currentUser);
 
