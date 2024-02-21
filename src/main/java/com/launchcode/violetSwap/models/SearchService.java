@@ -49,34 +49,25 @@ public class SearchService {
 
     //search for varieties
     public List<Variety> searchVarieties(String search){
-        System.out.println("__________________________________________________________search: " + search + "__________________________________________________________");
+        filteredVarieties.clear();//so no duplicates
         List<String> searchItems = makeSearchTerm(search); //make search parameter into a list of Strings (searchItems)
-        System.out.println("__________________________________________________________searchItems: " + searchItems + "__________________________________________________________");
+
         for(Variety variety : varietyRepository.findAll()){ //For each variety
-            System.out.println("__________________________________________________________variety: " + variety.getName() + "__________________________________________________________");
             int counter = searchItems.size();
-            System.out.println("__________________________________________________________counter: " + counter + "__________________________________________________________");
             String varietyName = removeExtraChars(variety.getName()); //get searchTerm of the variety.
-            System.out.println("__________________________________________________________searchTerm of VarietyName" + varietyName + "__________________________________________________________");
+
             for(String searchItem : searchItems){ //For each searchItem
-                System.out.println("__________________________________________________________searchItem: " + searchItem + "__________________________________________________________");
                 if (varietyName.contains(searchItem)){ //check if varietyName contains the searchItem.
-                    System.out.println("__________________________________________________________" + "searchItem is in VarietyName" + "__________________________________________________________");
                     counter --; //if yes, mark it and move to next searchItem
-                    System.out.println("__________________________________________________________updated counter: " + counter + "__________________________________________________________");
                     if (counter == 0){//once counter reaches 0, all search items have been found in varietyName, and that variety can be added to the list.
-                        System.out.println("__________________________________________________________" + "counter at 0" + "__________________________________________________________");
                         filteredVarieties.add(variety);
-                        System.out.println("__________________________________________________________filteredVarieties: " + filteredVarieties + "__________________________________________________________");
 
                     }
                 } else{
-                    System.out.println("__________________________________________________________" + "varietyName not in searchItem" + "__________________________________________________________");
                     break;
                 }
             }
         }
-        System.out.println("__________________________________________________________" + "returning filteredVarieties" + "__________________________________________________________");
         return filteredVarieties;
     }
 
@@ -85,6 +76,7 @@ public class SearchService {
 
     //search Users by zipcode
     public List<User> filterUsersByZipcode(String searchZip){
+        filteredUsers.clear();//so no duplicates
         Integer searchZipcode = Integer.valueOf(searchZip);
         for(User user : userRepository.findAll()){
             if(user.getZipcode().equals(searchZipcode)){ //if the search term equals the zipcode, add it to filteredLocationUsers
@@ -96,6 +88,7 @@ public class SearchService {
 
 //    //search Users by city / state, needs to have
 //    public List<User> filterUsersByLocation(String searchCity, String searchState){
+//        filteredUsers.clear();//so no duplicates
 //        searchCity = searchCity.toUpperCase();
 //        searchState = searchState.toUpperCase();
 //        for(User user : availableUsers){
@@ -110,6 +103,7 @@ public class SearchService {
     //may be moved to controller??:
     //filters users by calling methods, then gets the listings from those users
     public List<Listing> filterListingsByZipcode(String searchZip){
+        filteredListings.clear();//so no duplicates
         List<User> filteredLocationUsers = filterUsersByZipcode(searchZip); //call filterUsersByLocation/Zipcode
         for(User user : filteredLocationUsers){ //for every user returned,
             List<Listing> filteredLocationListings = user.getListings(); //get the user's listings
@@ -123,6 +117,7 @@ public class SearchService {
 
     //search for users
     public List<User> searchUsers(String search){
+        filteredUsers.clear();//so no duplicates
         search = search.toUpperCase();
         for(User user : userRepository.findAll()){ //for every user
             if(user.getUsername().toUpperCase().contains(search)){ //if they contain the search term, save in filteredUsers
