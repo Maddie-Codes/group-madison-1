@@ -9,7 +9,7 @@
 <form method="post" enctype="multipart/form-data">
 <!--<form method="post" style="max-width:600px;">-->
 
-    <!--    text box - Plant Variety will be a drop-down with the different varieties as the different options-->
+    <!--    Plant Variety will be a drop-down with the different varieties as the different options-->
     <!--    drop dpwn-->
     <div class="form-group">
         <label th:for="variety">African Violet Variety</label>
@@ -21,7 +21,7 @@
     <!--    link to listing/newVariety-->
     <div>
         <p>Don't see your variety?
-            <a th:href="@{'/listing/newVariety'}">Click Here!</a>
+            <a th:href="@{'/user/new-variety'}">Click Here!</a>
         </p>
     </div>
 
@@ -35,7 +35,7 @@
 
 <!--    text box-->
     <div class="form-group">
-        <label th:for="description">Brief Description (300 words or less)</label>
+        <label th:for="description">Brief Description (300 characters or less)</label>
         <input class="form-control" th:field="${listing.description}" type="text"/>
         <span th:errors="${listing.description}" class="error"></span>
     </div>

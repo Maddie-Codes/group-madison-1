@@ -39,6 +39,7 @@ public class SecurityConfig {
         //Requires a user to be authenticated to access any other page
         http.authorizeHttpRequests( auth -> {
                     auth.requestMatchers("/img/**").permitAll();
+                    auth.requestMatchers("/css/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET, "/", "/register", "/error").permitAll();
                     auth.requestMatchers(HttpMethod.POST, "/register").permitAll();
                     auth.anyRequest().authenticated();

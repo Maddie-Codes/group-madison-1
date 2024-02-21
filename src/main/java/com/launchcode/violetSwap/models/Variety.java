@@ -1,6 +1,8 @@
 package com.launchcode.violetSwap.models;
 
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -8,6 +10,8 @@ import java.util.Set;
 public class Variety extends AbstractEntity{
 
     private String name;
+
+//    private String searchTerm;
 
     @OneToMany(mappedBy = "variety")
     private Set<Listing> listings = new HashSet<>();
@@ -17,8 +21,10 @@ public class Variety extends AbstractEntity{
         // default constructor
     }
 
+
     public Variety(String name){
         this.name = name;
+        //this.searchTerm = search.removeExtraChars(name); //method removes extra chars and uppercases it to make it case-insensitive
     }
 
 
@@ -38,4 +44,8 @@ public class Variety extends AbstractEntity{
     public void setListings(Set<Listing> listings) {
         this.listings = listings;
     }
+
+//    public String getSearchTerm() {
+//        return searchTerm;
+//    }
 }
