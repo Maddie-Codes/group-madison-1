@@ -18,8 +18,8 @@ public class ZipcodeDataService {
 
 
     //consume API and return all its information, returns Object Array
-    public Object[] findAllDataComplete(Integer zipcode){
-        return template.getForObject("https://geocode.maps.co/search?postalcode=" + zipcode.toString() +"&country=US&api_key=" + geocodeAPIKey, Object[].class);
+    public Object[] findAllDataComplete(String zipcode){
+        return template.getForObject("https://geocode.maps.co/search?postalcode=" + zipcode +"&country=US&api_key=" + geocodeAPIKey, Object[].class);
     }
 
 //    //get object from API, get values from json object
@@ -33,10 +33,10 @@ public class ZipcodeDataService {
 
 
     //returns only fields specified in ZipcodeData class - gets a 500 error, I think this API is not set up for REST
-    public ZipcodeData[] findAllData(Integer zipcode){
+    public ZipcodeData[] findAllData(String zipcode){
         //ZipcodeData[] zipInfo = new ZipcodeData[]{template.getForObject("https://geocode.maps.co/search?postalcode=" + zipcode.toString() + "&country=US&api_key=" + geocodeAPIKey, ZipcodeData.class)};
         //return zipInfo[0]; //return the first object in the array
-        return template.getForObject("https://geocode.maps.co/search?postalcode=" + zipcode.toString() + "&country=US&api_key=" + geocodeAPIKey, ZipcodeData[].class);
+        return template.getForObject("https://geocode.maps.co/search?postalcode=" + zipcode + "&country=US&api_key=" + geocodeAPIKey, ZipcodeData[].class);
     }
 
 }

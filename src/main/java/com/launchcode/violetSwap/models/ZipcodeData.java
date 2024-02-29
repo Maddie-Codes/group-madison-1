@@ -5,8 +5,8 @@ import org.springframework.data.annotation.Version;
 
 public class ZipcodeData {
         private String display_name;
-        private Integer lat;
-        private Integer lon;
+        private String lat;
+        private String lon;
 
 //        public ZipcodeData(String display_name, Integer lat, Integer lon){
 //                this.display_name = display_name;
@@ -22,19 +22,19 @@ public class ZipcodeData {
                 this.display_name = display_name;
         }
 
-        public Integer getLat() {
+        public String getLat() {
                 return lat;
         }
 
-        public void setLat(Integer lat) {
+        public void setLat(String lat) {
                 this.lat = lat;
         }
 
-        public Integer getLon() {
+        public String getLon() {
                 return lon;
         }
 
-        public void setLon(Integer lon) {
+        public void setLon(String lon) {
                 this.lon = lon;
         }
 }

@@ -15,7 +15,7 @@ public class ZipcodeDataController {
     private ZipcodeDataService zipcodeDataService;
 
     //temporary field just to figure this stuff out.
-    Integer zipcode = 63119;
+    String zipcode = "63119";
 
     @GetMapping("/complete")
     public Object getAllZipcodeDataComplete(){

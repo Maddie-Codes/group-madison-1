@@ -2,6 +2,8 @@ package com.launchcode.violetSwap.controllers;
 
 import com.launchcode.violetSwap.models.LoginType;
 import com.launchcode.violetSwap.models.User;
+import com.launchcode.violetSwap.models.ZipcodeData;
+import com.launchcode.violetSwap.models.ZipcodeDataService;
 import com.launchcode.violetSwap.models.data.UserRepository;
 import com.launchcode.violetSwap.models.dto.LoginFormDTO;
 import com.launchcode.violetSwap.models.dto.RegisterFormDTO;
@@ -15,9 +17,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -26,6 +26,9 @@ public class AuthenticationController {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    private ZipcodeDataService zipcodeDataService;
 
     @Autowired
     CustomAuthenticationProvider customAuthenticationProvider;
@@ -91,8 +94,13 @@ public class AuthenticationController {
 
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getLoginType(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getZipcode());
 
-        //TODO: set city, state, and lat/long here. If no data to do so, return to register w/ title
+        //TODO: set address, and lat/long here. If no data to do so, return to register w/ title
 
+        String zipcode = registerFormDTO.getZipcode();
+        ZipcodeData data = zipcodeDataService.findAllData(zipcode)[0]; //data from API
+        newUser.setAddress(data.getDisplay_name()); //set address, latitude, longitude in user
+        newUser.setLatitude(Double.valueOf(data.getLat()));
+        newUser.setLongitude(Double.valueOf(data.getLon()));
 
 
         userRepository.save(newUser);
