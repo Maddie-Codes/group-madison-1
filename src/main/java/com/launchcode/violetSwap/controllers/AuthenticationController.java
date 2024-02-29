@@ -90,6 +90,11 @@ public class AuthenticationController {
         }
 
         User newUser = new User(registerFormDTO.getUsername(), registerFormDTO.getLoginType(), registerFormDTO.getPassword(), registerFormDTO.getEmail(), registerFormDTO.getZipcode());
+
+        //TODO: set city, state, and lat/long here. If no data to do so, return to register w/ title
+
+
+
         userRepository.save(newUser);
 
         request.login(registerFormDTO.getUsername(), registerFormDTO.getPassword());

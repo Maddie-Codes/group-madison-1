@@ -30,6 +30,11 @@ public class User extends AbstractEntity {
 
     private Integer zipcode;
 
+    private String city;
+    private String state;
+    private Integer latitude;
+    private Integer longitude;
+
     @OneToMany (mappedBy = "user")
     private final List<Listing> listings = new ArrayList<>();
 
@@ -91,7 +96,30 @@ public class User extends AbstractEntity {
         this.zipcode = Integer.valueOf(zipcode);
     }
 
-
+    public String getCity() {
+        return city;
+    }
+    public void setCity(String city) {
+        this.city = city;
+    }
+    public String getState() {
+        return state;
+    }
+    public void setState(String state) {
+        this.state = state;
+    }
+    public Integer getLatitude() {
+        return latitude;
+    }
+    public void setLatitude(Integer latitude) {
+        this.latitude = latitude;
+    }
+    public Integer getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(Integer longitude) {
+        this.longitude = longitude;
+    }
 
     public List<Listing> getListings() {
         return listings;

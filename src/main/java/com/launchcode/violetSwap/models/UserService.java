@@ -1,6 +1,7 @@
 package com.launchcode.violetSwap.models;
 
 import com.launchcode.violetSwap.models.data.UserRepository;
+import com.nimbusds.oauth2.sdk.http.HTTPRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +30,9 @@ public class UserService {
 
         return user.get();
     }
+
+
+
 
 
 }

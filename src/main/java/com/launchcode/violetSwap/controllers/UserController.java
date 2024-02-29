@@ -86,6 +86,9 @@ public class UserController {
         currentUser.setEmail(updateFormDTO.getEmail());
         currentUser.setZipcode(updateFormDTO.getZipcode());
 
+        //TODO: set city, state, and lat/long here. If no data to do so, return.
+
+
         userRepository.save(currentUser);
 
         return "redirect:/user/myDetails";

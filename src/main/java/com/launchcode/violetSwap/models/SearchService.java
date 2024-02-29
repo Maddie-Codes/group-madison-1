@@ -61,7 +61,6 @@ public class SearchService {
                     counter --; //if yes, mark it and move to next searchItem
                     if (counter == 0){//once counter reaches 0, all search items have been found in varietyName, and that variety can be added to the list.
                         filteredVarieties.add(variety);
-
                     }
                 } else{
                     break;
