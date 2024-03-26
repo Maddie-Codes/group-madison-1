@@ -107,12 +107,12 @@ public class User extends AbstractEntity {
         this.address = address;
     }
 
-    public String getCity() {
-        return address;
-    }
-    public void setCity(String city) {
-        this.address = city;
-    }
+//    public String getCity() {
+//        return address;
+//    }
+//    public void setCity(String city) {
+//        this.address = city;
+//    }
     public Double getLatitude() {
         return latitude;
     }

@@ -16,7 +16,7 @@
     </div>
     <div>
         <h3 th:text="${displayedUser.username}"></h3>
-        <h4 th:text="${displayedUser.zipcode}"></h4>
+        <h4 th:text="${displayedUser.address}"></h4>
     </div>
     <div th:if="${!isCurrentUser}">
         <h4 th:text="'Contact '+${displayedUser.username}"></h4>
